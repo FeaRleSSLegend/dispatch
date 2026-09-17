@@ -1,0 +1,48 @@
+report_id,text,category,severity
+RPT-0024,"System shows I logged in from Lagos at 2am last night, I was asleep in Abuja the whole time and my phone never left my side",account_takeover,medium
+RPT-0090,"IP address 197.210.54.12 has tried the admin login six times in the past twenty minutes, none successful, account is now temporarily locked",suspicious_activity,medium
+RPT-0028,"account REF-3391 has had five failed login attempts followed by one successful one from an unrecognized device in the last hour, the actual account owner says it wasn't them",account_takeover,medium
+RPT-0230,"Update on the recurring WiFi device, network logs now show it also attempted to reach an internal file server twice yesterday.",suspicious_activity,medium
+RPT-0089,Not sure if this is anything but our server room door alarm went off twice last night with no one scheduled to be there,suspicious_activity,low
+RPT-0006,"this is the third time this week someone in finance got an email pretending to be the CFO asking for an urgent wire transfer, none of them acted on it but wanted to flag the pattern",phishing,medium
+RPT-0190,"An old backup drive that was supposed to be wiped and disposed of was instead sold as scrap electronics, we're trying to figure out if it still had data on it",data_leak,medium
+RPT-0181,A staff member's personal phone with unsynced work emails including some containing student medical information was stolen from their car over the weekend,data_leak,high
+RPT-0045,"My computer has been unbearably slow since Tuesday, opening random tabs by itself, I think it's a virus but haven't confirmed",malware,low
+RPT-0120,"Update on the overnight login attempts, the same IP has now tried two other admin accounts this morning, all still failing.",account_takeover,high
+RPT-0152,"Multiple accounts across different departments were all locked out around the same time this morning after failed login attempts, seems coordinated rather than coincidental",account_takeover,high
+RPT-0164,"small thing but our office printer keeps randomly printing blank pages with strange codes on them since this morning, might just be a hardware glitch though",malware,low
+RPT-0127,Two accounting staff received what looked like an internal invoice approval request with a link that led to a fake Microsoft login page. One of them entered credentials before recognizing the page wasn't legitimate.,phishing,high
+RPT-0041,"Somebody hack enter my email and don start to send message to my contact list asking them for money, my own cousin almost send money before I call am to confirm",account_takeover,high
+RPT-0131,"small thing, got a text message with a link claiming to be from the electricity company about an overdue bill, didn't click, we don't even have a meter registered with that name",phishing,low
+RPT-0188,"small leak but worth noting, a WhatsApp status posted by a staff member briefly showed a screenshot with a customer's full details visible in the background before it was taken down",data_leak,low
+RPT-0008,"small thing but weird - got a WhatsApp message from a number saved as 'IT Support' asking me to send my login details for a 'system check'. I didn't respond, blocked the number",phishing,low
+RPT-0198,"Just found archived emergency contact forms for students from five years ago stored in a shared folder with no access restrictions, includes home addresses and next of kin phone numbers",data_leak,medium
+RPT-0186,"Someone accidentally attached the wrong file to a mass email, instead of the newsletter it included an internal spreadsheet with partial salary bands for three departments",data_leak,medium
+RPT-0227,An account with admin-level access made a permissions change at 4am that none of the actual admins recall doing.,account_takeover,high
+RPT-0200,"A security researcher reached out saying they found one of our internal API endpoints exposing user data without authentication, we're verifying this now before responding to them",data_leak,high
+RPT-0214,A contractor badge that was supposed to be returned at the end of a project last month was used to enter a restricted area yesterday,suspicious_activity,medium
+RPT-0122,"I dey receive different email everyday wey claim say na from NITDA asking make I click link to 'renew certification'. The grammar dey off small so I no trust am, never click",phishing,low
+RPT-0157,"An intern's account somehow gained access to a restricted folder they were never granted permission for, unclear if this was a misconfiguration or the account itself being misused",account_takeover,medium
+RPT-0192,"A staff member's unattended computer screen displayed a spreadsheet with donor contact information during a video call that was being recorded for training purposes, we need to check if the recording is stored anywhere accessible",data_leak,medium
+RPT-0176,"The library's public computers have all been showing the same browser redirect issue for two days, students keep reporting it but IT support hasn't gotten to it yet",malware,low
+RPT-0172,"Everyone in HR is reporting the exact same popup ad appearing on their screens randomly throughout the day, even on different websites, seems like adware spread through the department somehow",malware,low
+RPT-0032,"A departed staff member's account is still active and someone logged into it yesterday, three months after they left the organization.",account_takeover,high
+RPT-0059,"na today we notice say two computers for the ICT lab dey do the same strange thing, screen dey flicker and files dey disappear one by one",malware,high
+RPT-0076,"Someone in HR left a printed list of new hire salaries on the shared printer overnight, anyone walking past could have taken a photo of it",data_leak,low
+RPT-0101,"just flagging, one of our public-facing pages loaded noticeably slower than usual for about an hour yesterday evening, could be nothing but wanted it on record",suspicious_activity,low
+RPT-0208,"just flagging, a staff member reported someone matching no known employee taking photos of the parking lot and building exterior yesterday afternoon",suspicious_activity,medium
+RPT-0171,"A staff laptop that was sent for repair last week came back with unusual software installed that IT didn't put there, still investigating whether it's related to the repair shop or something else",malware,medium
+RPT-0169,"dem tok say the virus enter through one USB wey somebody bring from outside plug for the lab computer, now three computers for that lab dey act up",malware,high
+RPT-0177,"Confirmed keylogger on the shared reception desk computer, IT found it during a routine check, unclear how long it had been there or what was captured since multiple staff use that machine daily",malware,high
+RPT-0079,"Not sure how serious this is but a colleague's laptop with unencrypted patient notes was left in a taxi, she's since reported it and we're trying to figure out what exactly was on there",data_leak,high
+RPT-0138,"Someone tried the classic 'CEO fraud' approach today, an email supposedly from the director asking finance to process an urgent payment to a new account, finance flagged it immediately since it didn't match the director's usual writing style.",phishing,medium
+RPT-0080,"small leak, one intern shared their screen during a call and briefly had a spreadsheet with a few staff addresses visible, likely seen by external partners on the call",data_leak,low
+RPT-0222,"Follow-up on the fake supplier invoice from earlier, accounts payable confirms they nearly processed the payment before someone called the supplier directly and found out it was fraudulent.",phishing,high
+RPT-0022,"Received a spoofed email that appeared to come from my own university email address, asking me to click a link to 'recover a locked account'. Did not click, reported to IT immediately.",phishing,low
+RPT-0201,"Just noting something odd, the office lights in the server area turned on automatically last night according to the motion sensor logs, but no one was scheduled to be there",suspicious_activity,low
+RPT-0107,"nothing serious but a delivery person was seen taking photos of the building entrance and badge reader, security asked them to stop and they left without explanation",suspicious_activity,medium
+RPT-0178,"small issue, my laptop battery indicator shows it charging even when unplugged, might be a hardware fault but happened right after I opened a file someone sent me so wanted to mention it",malware,low
+RPT-0021,"random guy don dey call people phone dey pretend say na bank customer care, e dey ask make dem confirm card number for 'security check'. two of my coworkers almost gave their details before suspecting something.",phishing,medium
+RPT-0098,"Firewall logs show repeated connection attempts to an internal server from an external IP overnight, all blocked, but the pattern looks deliberate rather than random",suspicious_activity,medium
+RPT-0225,"Three machines in the same office row are showing identical malware symptoms, seems to be spreading across the local network.",malware,high
+RPT-0027,"Somebody don login enter my WhatsApp Business wey I dey use for customer support, dem don start to reply customer with different tone, I just notice am now",account_takeover,high

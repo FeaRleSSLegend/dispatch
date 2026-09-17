@@ -1,0 +1,23 @@
+[project]
+name = "ml-pipeline"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "John", email = "johnpraisewzth@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "joblib>=1.6.0",
+    "numpy>=2.4.6",
+    "pandas>=3.0.5",
+    "scikit-learn==1.9.1",
+    "spacy>=3.8.16",
+]
+
+[project.scripts]
+ml-pipeline = "ml_pipeline:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

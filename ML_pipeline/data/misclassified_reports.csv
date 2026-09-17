@@ -1,0 +1,13 @@
+report_id,text,category,severity,predicted_category,predicted_severity
+RPT-0024,"System shows I logged in from Lagos at 2am last night, I was asleep in Abuja the whole time and my phone never left my side",account_takeover,medium,suspicious_activity,low
+RPT-0090,"IP address 197.210.54.12 has tried the admin login six times in the past twenty minutes, none successful, account is now temporarily locked",suspicious_activity,medium,account_takeover,medium
+RPT-0152,"Multiple accounts across different departments were all locked out around the same time this morning after failed login attempts, seems coordinated rather than coincidental",account_takeover,high,suspicious_activity,medium
+RPT-0164,"small thing but our office printer keeps randomly printing blank pages with strange codes on them since this morning, might just be a hardware glitch though",malware,low,suspicious_activity,low
+RPT-0041,"Somebody hack enter my email and don start to send message to my contact list asking them for money, my own cousin almost send money before I call am to confirm",account_takeover,high,phishing,medium
+RPT-0188,"small leak but worth noting, a WhatsApp status posted by a staff member briefly showed a screenshot with a customer's full details visible in the background before it was taken down",data_leak,low,suspicious_activity,low
+RPT-0200,"A security researcher reached out saying they found one of our internal API endpoints exposing user data without authentication, we're verifying this now before responding to them",data_leak,high,suspicious_activity,medium
+RPT-0076,"Someone in HR left a printed list of new hire salaries on the shared printer overnight, anyone walking past could have taken a photo of it",data_leak,low,malware,low
+RPT-0101,"just flagging, one of our public-facing pages loaded noticeably slower than usual for about an hour yesterday evening, could be nothing but wanted it on record",suspicious_activity,low,malware,low
+RPT-0171,"A staff laptop that was sent for repair last week came back with unusual software installed that IT didn't put there, still investigating whether it's related to the repair shop or something else",malware,medium,suspicious_activity,low
+RPT-0079,"Not sure how serious this is but a colleague's laptop with unencrypted patient notes was left in a taxi, she's since reported it and we're trying to figure out what exactly was on there",data_leak,high,suspicious_activity,low
+RPT-0027,"Somebody don login enter my WhatsApp Business wey I dey use for customer support, dem don start to reply customer with different tone, I just notice am now",account_takeover,high,data_leak,medium
