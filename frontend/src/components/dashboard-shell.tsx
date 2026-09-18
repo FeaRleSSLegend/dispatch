@@ -1,7 +1,8 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { Activity, BarChart3, FilePlus2, LayoutDashboard, Radio, Shield } from "lucide-react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Activity, BarChart3, FilePlus2, LayoutDashboard, LogOut, Radio, Shield } from "lucide-react";
 import type { ReactNode } from "react";
 
+import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -13,6 +14,8 @@ const navItems = [
 
 export function DashboardShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const { session, signOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -28,7 +31,8 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           })}
         </nav>
         <div className="border-t border-border p-5">
-          <div className="flex items-center gap-3"><span className="relative flex size-8 items-center justify-center rounded-full bg-secondary text-xs font-semibold">SO<span className="absolute bottom-0 right-0 size-2 rounded-full bg-success ring-2 ring-sidebar" /></span><div><p className="text-xs font-medium">Security Operations</p><p className="text-[11px] text-muted-foreground">All systems operational</p></div></div>
+          <div className="flex items-center gap-3"><span className="relative flex size-8 items-center justify-center rounded-full bg-secondary text-xs font-semibold">SO<span className="absolute bottom-0 right-0 size-2 rounded-full bg-success ring-2 ring-sidebar" /></span><div className="min-w-0"><p className="truncate text-xs font-medium">{session?.name ?? "Security Operations"}</p><p className="truncate text-[11px] text-muted-foreground">{session?.email ?? "All systems operational"}</p></div></div>
+          <button onClick={() => { signOut(); navigate({ to: "/admin/login", replace: true }); }} className="mt-4 flex h-9 w-full items-center justify-center gap-2 rounded-md border border-border bg-secondary/40 text-xs text-muted-foreground transition-colors hover:text-foreground"><LogOut className="size-3.5" />Sign out</button>
         </div>
       </aside>
 

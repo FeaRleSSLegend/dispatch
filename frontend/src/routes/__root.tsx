@@ -1,16 +1,16 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
-  HeadContent,
-  Scripts,
-} from "@tanstack/react-router";
-import type { ReactNode } from "react";
-import { DashboardShell } from "@/components/dashboard-shell";
-
-import appCss from "../styles.css?url";
+  useNavigate,
+  useRouterState,
+} from '@tanstack/react-router'
+import { useEffect } from 'react'
+import { DashboardShell } from '@/components/dashboard-shell'
+import { ReporterShell } from '@/components/reporter-shell'
+import { AuthProvider, useAuth } from '@/lib/auth'
 
 function NotFoundComponent() {
   return (
@@ -31,14 +31,16 @@ function NotFoundComponent() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
-  const router = useRouter();
+  console.error(error)
+  const router = useRouter()
+
   useEffect(() => {
-  }, [error]);
+    // Add error reporting here if you wire one up later.
+  }, [error])
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -52,8 +54,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
-              router.invalidate();
-              reset();
+              router.invalidate()
+              reset()
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
@@ -68,56 +70,61 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Dispatch — Incident Triage" },
-      { name: "description", content: "Security incident triage and response command dashboard." },
-      { name: "author", content: "Dispatch" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
-});
-
-function RootShell({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
+})
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
+  const { queryClient } = Route.useRouteContext()
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DashboardShell><Outlet /></DashboardShell>
+      <AuthProvider>
+        <AuthGate />
+      </AuthProvider>
     </QueryClientProvider>
-  );
+  )
+}
+
+const publicPaths = ['/login', '/signup', '/admin/login', '/admin/signup']
+
+function AuthGate() {
+  const { session, ready } = useAuth()
+  const navigate = useNavigate()
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const isPublic = publicPaths.includes(pathname)
+
+  useEffect(() => {
+    if (!ready) return
+    if (!session) {
+      if (!isPublic) navigate({ to: '/login', replace: true })
+      return
+    }
+    if (session.role === 'user' && pathname !== '/report') {
+      navigate({ to: '/report', replace: true })
+    }
+    if (session.role === 'admin' && (pathname === '/report' || isPublic)) {
+      navigate({ to: '/', replace: true })
+    }
+  }, [ready, session, pathname, isPublic, navigate])
+
+  if (isPublic) return <Outlet />
+  if (!ready || !session) return <div className="min-h-screen bg-background" />
+  if (session.role === 'user') {
+    return (
+      <ReporterShell>
+        <Outlet />
+      </ReporterShell>
+    )
+  }
+  return (
+    <DashboardShell>
+      <Outlet />
+    </DashboardShell>
+  )
 }

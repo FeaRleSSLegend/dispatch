@@ -12,7 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IncidentsRouteImport } from './routes/incidents'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as NewReportRouteImport } from './routes/new-report'
+import { Route as ReportRouteImport } from './routes/report'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminSignupRouteImport } from './routes/admin.signup'
 import { Route as IncidentsIndexRouteImport } from './routes/incidents.index'
 import { Route as IncidentsIncidentIdRouteImport } from './routes/incidents.$incidentId'
 
@@ -31,9 +36,34 @@ const IncidentsRoute = IncidentsRouteImport.update({
   path: '/incidents',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewReportRoute = NewReportRouteImport.update({
   id: '/new-report',
   path: '/new-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportRoute = ReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSignupRoute = AdminSignupRouteImport.update({
+  id: '/admin/signup',
+  path: '/admin/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IncidentsIndexRoute = IncidentsIndexRouteImport.update({
@@ -51,14 +81,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/incidents': typeof IncidentsRouteWithChildren
+  '/login': typeof LoginRoute
   '/new-report': typeof NewReportRoute
+  '/report': typeof ReportRoute
+  '/signup': typeof SignupRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/signup': typeof AdminSignupRoute
   '/incidents/$incidentId': typeof IncidentsIncidentIdRoute
   '/incidents/': typeof IncidentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/login': typeof LoginRoute
   '/new-report': typeof NewReportRoute
+  '/report': typeof ReportRoute
+  '/signup': typeof SignupRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/signup': typeof AdminSignupRoute
   '/incidents/$incidentId': typeof IncidentsIncidentIdRoute
   '/incidents': typeof IncidentsIndexRoute
 }
@@ -67,7 +107,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/incidents': typeof IncidentsRouteWithChildren
+  '/login': typeof LoginRoute
   '/new-report': typeof NewReportRoute
+  '/report': typeof ReportRoute
+  '/signup': typeof SignupRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/signup': typeof AdminSignupRoute
   '/incidents/$incidentId': typeof IncidentsIncidentIdRoute
   '/incidents/': typeof IncidentsIndexRoute
 }
@@ -77,18 +122,37 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/incidents'
+    | '/login'
     | '/new-report'
+    | '/report'
+    | '/signup'
+    | '/admin/login'
+    | '/admin/signup'
     | '/incidents/$incidentId'
     | '/incidents/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/analytics' | '/new-report' | '/incidents/$incidentId' | '/incidents'
+    | '/'
+    | '/analytics'
+    | '/login'
+    | '/new-report'
+    | '/report'
+    | '/signup'
+    | '/admin/login'
+    | '/admin/signup'
+    | '/incidents/$incidentId'
+    | '/incidents'
   id:
     | '__root__'
     | '/'
     | '/analytics'
     | '/incidents'
+    | '/login'
     | '/new-report'
+    | '/report'
+    | '/signup'
+    | '/admin/login'
+    | '/admin/signup'
     | '/incidents/$incidentId'
     | '/incidents/'
   fileRoutesById: FileRoutesById
@@ -97,7 +161,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   IncidentsRoute: typeof IncidentsRouteWithChildren
+  LoginRoute: typeof LoginRoute
   NewReportRoute: typeof NewReportRoute
+  ReportRoute: typeof ReportRoute
+  SignupRoute: typeof SignupRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminSignupRoute: typeof AdminSignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -123,11 +192,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IncidentsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/new-report': {
       id: '/new-report'
       path: '/new-report'
       fullPath: '/new-report'
       preLoaderRoute: typeof NewReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/report': {
+      id: '/report'
+      path: '/report'
+      fullPath: '/report'
+      preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/signup': {
+      id: '/admin/signup'
+      path: '/admin/signup'
+      fullPath: '/admin/signup'
+      preLoaderRoute: typeof AdminSignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/incidents/': {
@@ -165,17 +269,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   IncidentsRoute: IncidentsRouteWithChildren,
+  LoginRoute: LoginRoute,
   NewReportRoute: NewReportRoute,
+  ReportRoute: ReportRoute,
+  SignupRoute: SignupRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminSignupRoute: AdminSignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
