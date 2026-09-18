@@ -1,0 +1,13 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeading } from "@/components/incident-ui";
+
+export const Route = createFileRoute("/analytics")({
+  head: () => ({ meta: [
+    { title: "Response Analytics — SENTINEL" }, { name: "description", content: "Security incident volume, severity, and response performance." },
+    { property: "og:title", content: "Response Analytics — SENTINEL" }, { property: "og:description", content: "Security incident volume and response performance." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
+  ]}), component: Analytics,
+});
+
+const days = [{d:"Fri",v:38},{d:"Sat",v:24},{d:"Sun",v:18},{d:"Mon",v:54},{d:"Tue",v:76},{d:"Wed",v:62},{d:"Thu",v:88}];
+function Analytics() { return <div><PageHeading eyebrow="Response intelligence" title="Analytics" description="A seven-day view of incident volume, severity distribution, and operational response performance." /><div className="grid gap-5 xl:grid-cols-[1.4fr_.6fr]"><section className="panel"><div className="flex items-end justify-between"><div><p className="section-label">Incident volume</p><p className="mt-2 text-xs text-muted-foreground">Last seven days</p></div><p className="font-display text-3xl font-semibold">72</p></div><div className="mt-10 flex h-56 items-end gap-3 border-b border-border px-2">{days.map((day) => <div key={day.d} className="flex h-full flex-1 flex-col justify-end gap-3"><div className="relative flex-1"><div className="absolute inset-x-0 bottom-0 rounded-t-sm bg-primary/70" style={{height:`${day.v}%`}} /></div><span className="pb-3 text-center text-[10px] text-muted-foreground">{day.d}</span></div>)}</div></section><section className="panel"><p className="section-label">Severity distribution</p><div className="mt-7 space-y-5">{[{l:"Critical",v:9,c:"bg-severity-critical"},{l:"High",v:24,c:"bg-severity-high"},{l:"Medium",v:31,c:"bg-severity-medium"},{l:"Low",v:36,c:"bg-severity-low"}].map(x=><div key={x.l}><div className="mb-2 flex justify-between text-xs"><span>{x.l}</span><span className="text-muted-foreground">{x.v}%</span></div><div className="h-1.5 rounded-full bg-secondary"><div className={`h-full rounded-full ${x.c}`} style={{width:`${x.v}%`}} /></div></div>)}</div></section></div><div className="mt-5 grid gap-3 sm:grid-cols-3">{[{l:"Reports triaged",v:"148"},{l:"Mean response time",v:"11m"},{l:"Duplicates prevented",v:"23"}].map(x=><article key={x.l} className="rounded-lg border border-border bg-card p-5"><p className="text-xs text-muted-foreground">{x.l}</p><p className="mt-4 font-display text-2xl font-semibold">{x.v}</p></article>)}</div></div>; }
