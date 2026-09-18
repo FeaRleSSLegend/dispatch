@@ -3,8 +3,8 @@ import { PageHeading } from "@/components/incident-ui";
 
 export const Route = createFileRoute("/analytics")({
   head: () => ({ meta: [
-    { title: "Response Analytics — SENTINEL" }, { name: "description", content: "Security incident volume, severity, and response performance." },
-    { property: "og:title", content: "Response Analytics — SENTINEL" }, { property: "og:description", content: "Security incident volume and response performance." },
+    { title: "Response Analytics — Dispatch" }, { name: "description", content: "Security incident volume, severity, and response performance." },
+    { property: "og:title", content: "Response Analytics — Dispatch" }, { property: "og:description", content: "Security incident volume and response performance." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ]}), component: Analytics,
 });

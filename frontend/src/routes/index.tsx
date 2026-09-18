@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 // project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "Operations Overview — SENTINEL" },
+    { title: "Operations Overview — Dispatch" },
     { name: "description", content: "Live security incident statistics, priority queue, and response health." },
-    { property: "og:title", content: "Operations Overview — SENTINEL" },
+    { property: "og:title", content: "Operations Overview — Dispatch" },
     { property: "og:description", content: "Live security incident statistics and response health." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },

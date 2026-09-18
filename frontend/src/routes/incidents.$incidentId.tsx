@@ -6,8 +6,8 @@ import { incidents } from "@/lib/incidents";
 
 export const Route = createFileRoute("/incidents/$incidentId")({
   head: () => ({ meta: [
-    { title: "Incident Review — SENTINEL" }, { name: "description", content: "Review incident evidence, routing, duplicates, and redacted report output." },
-    { property: "og:title", content: "Incident Review — SENTINEL" }, { property: "og:description", content: "Review incident evidence and response routing." },
+    { title: "Incident Review — Dispatch" }, { name: "description", content: "Review incident evidence, routing, duplicates, and redacted report output." },
+    { property: "og:title", content: "Incident Review — Dispatch" }, { property: "og:description", content: "Review incident evidence and response routing." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ]}), component: IncidentDetail,
 });

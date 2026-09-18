@@ -76,9 +76,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SENTINEL — Incident Triage" },
+      { title: "Dispatch — Incident Triage" },
       { name: "description", content: "Security incident triage and response command dashboard." },
-      { name: "author", content: "SENTINEL" },
+      { name: "author", content: "Dispatch" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

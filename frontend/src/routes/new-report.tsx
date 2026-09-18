@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/new-report")({
   head: () => ({ meta: [
-    { title: "New Incident Report — SENTINEL" }, { name: "description", content: "Analyze and classify a new security incident report." },
-    { property: "og:title", content: "New Incident Report — SENTINEL" }, { property: "og:description", content: "Analyze and classify a new security incident report." },
+    { title: "New Incident Report — Dispatch" }, { name: "description", content: "Analyze and classify a new security incident report." },
+    { property: "og:title", content: "New Incident Report — Dispatch" }, { property: "og:description", content: "Analyze and classify a new security incident report." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ]}), component: NewReport,
 });

@@ -19,7 +19,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 border-r border-border bg-sidebar lg:flex lg:flex-col">
         <div className="flex h-20 items-center gap-3 border-b border-border px-7">
           <span className="flex size-9 items-center justify-center rounded-md border border-primary/30 bg-primary/10 text-primary"><Shield className="size-4" /></span>
-          <div><p className="font-display text-base font-semibold tracking-wide">SENTINEL</p><p className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Incident command</p></div>
+          <div><p className="font-display text-base font-semibold tracking-wide">Dispatch</p><p className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Incident command</p></div>
         </div>
         <nav className="flex-1 space-y-1 px-4 py-7" aria-label="Primary navigation">
           {navItems.map((item) => {
@@ -34,7 +34,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
       <div className="lg:pl-64">
         <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-border bg-background/90 px-5 backdrop-blur md:px-8 lg:px-10">
-          <div className="flex items-center gap-3 lg:hidden"><Shield className="size-5 text-primary" /><span className="font-display text-sm font-semibold tracking-wide">SENTINEL</span></div>
+          <div className="flex items-center gap-3 lg:hidden"><Shield className="size-5 text-primary" /><span className="font-display text-sm font-semibold tracking-wide">Dispatch</span></div>
           <div className="hidden items-center gap-2 text-xs text-muted-foreground lg:flex"><Radio className="size-3 text-success" /><span>Live triage</span><span className="text-border">/</span><span>September 17, 2026</span></div>
           <div className="flex items-center gap-2 rounded-md border border-border bg-secondary/40 px-3 py-1.5 text-xs text-muted-foreground"><span className="size-1.5 rounded-full bg-primary" />SLA monitored</div>
         </header>
