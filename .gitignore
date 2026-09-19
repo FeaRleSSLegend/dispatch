@@ -1,0 +1,16 @@
+.env
+backend/.env
+.env
+backend/.env
+ML_pipeline/venv/
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+backend/.env
+ML_pipeline/venv/
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo

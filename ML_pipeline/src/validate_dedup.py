@@ -8,7 +8,7 @@ DATA_PATH = BASE_DIR.parent / "data" / "incident_reports_dataset.csv"
 MODELS_DIR = BASE_DIR.parent / "models"
 
 def validate_at_threshold(df, vectorizer, threshold):
-    reports = df[["report_id", "text"]].to_dict("records")
+    reports = df[["report_id", "text", "timestamp"]].to_dict("records")
     predicted = find_duplicates(reports, vectorizer, threshold=threshold)
 
     ground_truth = dict(zip(df["report_id"], df["duplicate_of"]))

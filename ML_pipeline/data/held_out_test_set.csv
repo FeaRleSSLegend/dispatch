@@ -1,48 +1,54 @@
 report_id,text,category,severity
-RPT-0024,"System shows I logged in from Lagos at 2am last night, I was asleep in Abuja the whole time and my phone never left my side",account_takeover,medium
-RPT-0090,"IP address 197.210.54.12 has tried the admin login six times in the past twenty minutes, none successful, account is now temporarily locked",suspicious_activity,medium
-RPT-0028,"account REF-3391 has had five failed login attempts followed by one successful one from an unrecognized device in the last hour, the actual account owner says it wasn't them",account_takeover,medium
-RPT-0230,"Update on the recurring WiFi device, network logs now show it also attempted to reach an internal file server twice yesterday.",suspicious_activity,medium
-RPT-0089,Not sure if this is anything but our server room door alarm went off twice last night with no one scheduled to be there,suspicious_activity,low
-RPT-0006,"this is the third time this week someone in finance got an email pretending to be the CFO asking for an urgent wire transfer, none of them acted on it but wanted to flag the pattern",phishing,medium
+RPT-0111,"Just reporting that our payroll portal seems to have a fake lookalike login page circulating, several staff got the link this morning via email.",phishing,medium
+RPT-0074,"Just noticed a public GitHub repo from one of our developers has database credentials hardcoded in it, taking it down now, unsure how long it's been exposed",data_leak,high
+RPT-0244,"A caller asked for my account PIN saying it was for verification, I told him banks don't ask for that and ended the call.",phishing,low
 RPT-0190,"An old backup drive that was supposed to be wiped and disposed of was instead sold as scrap electronics, we're trying to figure out if it still had data on it",data_leak,medium
-RPT-0181,A staff member's personal phone with unsynced work emails including some containing student medical information was stolen from their car over the weekend,data_leak,high
-RPT-0045,"My computer has been unbearably slow since Tuesday, opening random tabs by itself, I think it's a virus but haven't confirmed",malware,low
-RPT-0120,"Update on the overnight login attempts, the same IP has now tried two other admin accounts this morning, all still failing.",account_takeover,high
-RPT-0152,"Multiple accounts across different departments were all locked out around the same time this morning after failed login attempts, seems coordinated rather than coincidental",account_takeover,high
-RPT-0164,"small thing but our office printer keeps randomly printing blank pages with strange codes on them since this morning, might just be a hardware glitch though",malware,low
-RPT-0127,Two accounting staff received what looked like an internal invoice approval request with a link that led to a fake Microsoft login page. One of them entered credentials before recognizing the page wasn't legitimate.,phishing,high
-RPT-0041,"Somebody hack enter my email and don start to send message to my contact list asking them for money, my own cousin almost send money before I call am to confirm",account_takeover,high
-RPT-0131,"small thing, got a text message with a link claiming to be from the electricity company about an overdue bill, didn't click, we don't even have a meter registered with that name",phishing,low
-RPT-0188,"small leak but worth noting, a WhatsApp status posted by a staff member briefly showed a screenshot with a customer's full details visible in the background before it was taken down",data_leak,low
-RPT-0008,"small thing but weird - got a WhatsApp message from a number saved as 'IT Support' asking me to send my login details for a 'system check'. I didn't respond, blocked the number",phishing,low
-RPT-0198,"Just found archived emergency contact forms for students from five years ago stored in a shared folder with no access restrictions, includes home addresses and next of kin phone numbers",data_leak,medium
+RPT-0103,"we get alert say one account try access three different systems within two minutes, wey no normal for how our staff dey work",suspicious_activity,medium
+RPT-0004,"Pls help, I dey receive message everyday say my account go close if I no verify. Today one look almost real, I nearly enter my details but network cut before I finish",phishing,medium
 RPT-0186,"Someone accidentally attached the wrong file to a mass email, instead of the newsletter it included an internal spreadsheet with partial salary bands for three departments",data_leak,medium
-RPT-0227,An account with admin-level access made a permissions change at 4am that none of the actual admins recall doing.,account_takeover,high
-RPT-0200,"A security researcher reached out saying they found one of our internal API endpoints exposing user data without authentication, we're verifying this now before responding to them",data_leak,high
-RPT-0214,A contractor badge that was supposed to be returned at the end of a project last month was used to enter a restricted area yesterday,suspicious_activity,medium
-RPT-0122,"I dey receive different email everyday wey claim say na from NITDA asking make I click link to 'renew certification'. The grammar dey off small so I no trust am, never click",phishing,low
-RPT-0157,"An intern's account somehow gained access to a restricted folder they were never granted permission for, unclear if this was a misconfiguration or the account itself being misused",account_takeover,medium
-RPT-0192,"A staff member's unattended computer screen displayed a spreadsheet with donor contact information during a video call that was being recorded for training purposes, we need to check if the recording is stored anywhere accessible",data_leak,medium
-RPT-0176,"The library's public computers have all been showing the same browser redirect issue for two days, students keep reporting it but IT support hasn't gotten to it yet",malware,low
-RPT-0172,"Everyone in HR is reporting the exact same popup ad appearing on their screens randomly throughout the day, even on different websites, seems like adware spread through the department somehow",malware,low
-RPT-0032,"A departed staff member's account is still active and someone logged into it yesterday, three months after they left the organization.",account_takeover,high
-RPT-0059,"na today we notice say two computers for the ICT lab dey do the same strange thing, screen dey flicker and files dey disappear one by one",malware,high
-RPT-0076,"Someone in HR left a printed list of new hire salaries on the shared printer overnight, anyone walking past could have taken a photo of it",data_leak,low
-RPT-0101,"just flagging, one of our public-facing pages loaded noticeably slower than usual for about an hour yesterday evening, could be nothing but wanted it on record",suspicious_activity,low
-RPT-0208,"just flagging, a staff member reported someone matching no known employee taking photos of the parking lot and building exterior yesterday afternoon",suspicious_activity,medium
-RPT-0171,"A staff laptop that was sent for repair last week came back with unusual software installed that IT didn't put there, still investigating whether it's related to the repair shop or something else",malware,medium
-RPT-0169,"dem tok say the virus enter through one USB wey somebody bring from outside plug for the lab computer, now three computers for that lab dey act up",malware,high
-RPT-0177,"Confirmed keylogger on the shared reception desk computer, IT found it during a routine check, unclear how long it had been there or what was captured since multiple staff use that machine daily",malware,high
-RPT-0079,"Not sure how serious this is but a colleague's laptop with unencrypted patient notes was left in a taxi, she's since reported it and we're trying to figure out what exactly was on there",data_leak,high
-RPT-0138,"Someone tried the classic 'CEO fraud' approach today, an email supposedly from the director asking finance to process an urgent payment to a new account, finance flagged it immediately since it didn't match the director's usual writing style.",phishing,medium
-RPT-0080,"small leak, one intern shared their screen during a call and briefly had a spreadsheet with a few staff addresses visible, likely seen by external partners on the call",data_leak,low
-RPT-0222,"Follow-up on the fake supplier invoice from earlier, accounts payable confirms they nearly processed the payment before someone called the supplier directly and found out it was fraudulent.",phishing,high
-RPT-0022,"Received a spoofed email that appeared to come from my own university email address, asking me to click a link to 'recover a locked account'. Did not click, reported to IT immediately.",phishing,low
-RPT-0201,"Just noting something odd, the office lights in the server area turned on automatically last night according to the motion sensor logs, but no one was scheduled to be there",suspicious_activity,low
+RPT-0191,"just a heads up, one of our chatbot integrations logs full conversation transcripts including anything users type, even if they accidentally paste sensitive information, and we never reviewed where those logs are stored",data_leak,low
+RPT-0155,"The IT admin account was used to disable a security alert rule at 4am, none of the three people with access to that account were awake or working at that hour according to their statements",account_takeover,high
+RPT-0052,"A USB drive that was plugged into one of the lab computers seems to have introduced something, that machine is now behaving strangely and won't boot properly.",malware,medium
+RPT-0142,"Someone used a staff account to approve a purchase order for equipment nobody ordered, the actual staff member was on leave the entire week and had no access to their laptop.",account_takeover,high
 RPT-0107,"nothing serious but a delivery person was seen taking photos of the building entrance and badge reader, security asked them to stop and they left without explanation",suspicious_activity,medium
+RPT-0005,"A colleague forwarded me a message claiming to be from our bank's fraud department, asking to call a number and confirm a transaction that never happened. She didn't call. Sharing for awareness.",phishing,low
+RPT-0100,"URGENT-ish, someone tried the server room keycard access three times with a card that was reported lost two weeks ago",suspicious_activity,medium
+RPT-0164,"small thing but our office printer keeps randomly printing blank pages with strange codes on them since this morning, might just be a hardware glitch though",malware,low
+RPT-0044,"My login session appears to have been active in two locations simultaneously according to the activity log, one of them not anywhere near where I was.",account_takeover,medium
+RPT-0169,"dem tok say the virus enter through one USB wey somebody bring from outside plug for the lab computer, now three computers for that lab dey act up",malware,high
+RPT-0148,"we noticed unusual admin activity granting elevated permissions to a temporary contractor account that should have expired months ago, revoked access immediately",account_takeover,high
+RPT-0230,"Update on the recurring WiFi device, network logs now show it also attempted to reach an internal file server twice yesterday.",suspicious_activity,medium
+RPT-0124,"just got a call from someone claiming to be from the telecom provider saying my SIM will be deactivated unless I share the code that was just sent to my phone. Hung up immediately, did not share anything.",phishing,low
+RPT-0170,"small alert, one of our external-facing web pages is loading extremely slowly and occasionally redirecting to an unrelated site for a few seconds before loading properly, might be compromised",malware,medium
+RPT-0135,"I don receive this same message three times now, dem dey pretend say na court summon, make you click link see full details. E be scam, I don report am for the group",phishing,low
+RPT-0017,"just curious if anyone else got the email about 'mandatory 2FA setup' with a weird external link this morning, I didn't trust it so I didn't open it",phishing,low
+RPT-0159,"Someone attempted to reset the password on the shared department email three times within ten minutes using the 'forgot password' link, none of us initiated it",account_takeover,medium
+RPT-0117,"Student records export with names and scores was found sitting on a public subdomain, indexed by search engines.",data_leak,high
+RPT-0189,"URGENT, our entire customer database export, including names, phone numbers, and partial payment info, was found on a public code repository uploaded by a developer who forgot to remove it before making the repo public",data_leak,high
+RPT-0095,"something no just correct, our internet don dey slow since this morning and nobody dey do anything heavy for the network as far as I sabi",suspicious_activity,low
+RPT-0023,"I could not log into my staff account this morning, it says my password is wrong even though I haven't changed it. Tried resetting but the recovery email on file isn't mine anymore.",account_takeover,high
+RPT-0139,"just noting this happened again, dem don try the same fake scholarship email trick on students for the third semester running, some students still dey fall for am unfortunately",phishing,medium
+RPT-0247,"Got a call asking me to read out an OTP for 'verification', I told them I wasn't comfortable and the line went dead immediately.",phishing,low
+RPT-0131,"small thing, got a text message with a link claiming to be from the electricity company about an overdue bill, didn't click, we don't even have a meter registered with that name",phishing,low
+RPT-0055,"system don show say virus dey but antivirus no fit remove am, e keep coming back anytime we restart the machine",malware,medium
+RPT-0219,"The building's fire exit door, which has an alarm, was found propped open with no alarm triggered, unclear if the sensor failed or if it was intentionally bypassed",suspicious_activity,medium
+RPT-0081,"Somebody don upload the whole staff payroll file to a cloud storage account wey no get password, e dey there since last week before person notice am today",data_leak,high
+RPT-0010,"got an sms claiming to be from the university saying I won a scholarship, just need to click a link and pay a small verification fee. obviously fake, did not engage",phishing,low
+RPT-0038,"Multiple staff reporting the same thing this morning: locked out of accounts, recovery details changed, no memory of doing it themselves. Might be connected.",account_takeover,high
+RPT-0030,"URGENT - money don leave one staff account go one account wey we no recognize, the transfer show say e happen this morning around 7am while the actual staff say im dey sleep",account_takeover,high
+RPT-0037,"I dey suspect say my login don compromise because my inbox get one folder wey I never create, and inside am get some email wey no be my style at all",account_takeover,medium
+RPT-0239,"I shared my staff login with someone who called claiming to be from head office doing a system audit, only realized after the call that we don't do audits that way.",phishing,high
+RPT-0223,"A cloud storage bucket containing old audit reports has been publicly accessible, we're still figuring out how long it's been exposed.",data_leak,high
+RPT-0134,"A parent called to say they received an email supposedly from the school asking for updated payment details for tuition, wanted to confirm if it was legitimate before sending anything, it was not from us.",phishing,low
+RPT-0079,"Not sure how serious this is but a colleague's laptop with unencrypted patient notes was left in a taxi, she's since reported it and we're trying to figure out what exactly was on there",data_leak,high
+RPT-0237,Somebody on the phone asked for the OTP that just came to my number and I read it out to them without thinking.,phishing,high
+RPT-0243,"Someone called asking for my card details claiming to be from the bank, I refused and hung up.",phishing,low
+RPT-0241,A caller convinced me he was my bank's fraud team and I gave him my account number and the code that came to my phone right after.,phishing,high
+RPT-0066,"just a heads up, got a warning from our email provider that one of our addresses may be compromised and sending spam, we've reset the password as a precaution",malware,medium
+RPT-0047,Antivirus caught something trying to run at startup this morning and quarantined it before I even noticed anything wrong. Not sure what it was trying to do.,malware,low
 RPT-0178,"small issue, my laptop battery indicator shows it charging even when unplugged, might be a hardware fault but happened right after I opened a file someone sent me so wanted to mention it",malware,low
-RPT-0021,"random guy don dey call people phone dey pretend say na bank customer care, e dey ask make dem confirm card number for 'security check'. two of my coworkers almost gave their details before suspecting something.",phishing,medium
-RPT-0098,"Firewall logs show repeated connection attempts to an internal server from an external IP overnight, all blocked, but the pattern looks deliberate rather than random",suspicious_activity,medium
-RPT-0225,"Three machines in the same office row are showing identical malware symptoms, seems to be spreading across the local network.",malware,high
-RPT-0027,"Somebody don login enter my WhatsApp Business wey I dey use for customer support, dem don start to reply customer with different tone, I just notice am now",account_takeover,high
+RPT-0091,One of the security cameras near the data center caught someone lingering by the server racks after hours who doesn't match any of our staff badges,suspicious_activity,medium
+RPT-0075,"one student complain say im matric number and result appear for one group chat wey no suppose see am, we still dey find out how e come reach there",data_leak,medium
+RPT-0109,"An employee reported receiving a call from someone claiming to be doing a 'security audit' and asking oddly specific questions about our internal systems, they didn't answer and hung up",suspicious_activity,medium
+RPT-0211,"An IT ticket was submitted requesting access changes for a system, but nobody on the IT team recalls receiving or processing it, currently trying to trace where it originated",suspicious_activity,medium
+RPT-0167,"URGENT, ransomware has hit the student records database, files are inaccessible and there's a countdown timer in the ransom note threatening to delete everything if payment isn't made within 48 hours",malware,high

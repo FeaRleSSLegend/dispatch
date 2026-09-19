@@ -3,7 +3,8 @@ from preprocess import clean_text, load_vectorizer
 from extract_entities import extract_entities
 from redact_pii import redact_pii
 
-MODELS_DIR = "../models"
+from pathlib import Path
+MODELS_DIR = str(Path(__file__).resolve().parent.parent / "models")
 
 ROUTING_TABLE = {
     "phishing": "IT Security",
@@ -23,7 +24,11 @@ def process_report(raw_text: str) -> dict:
     vec = _vectorizer.transform([cleaned])
 
     category = _category_clf.predict(vec)[0]
+    category_confidence = float(_category_clf.predict_proba(vec).max()) * 100
+
     severity = _severity_clf.predict(vec)[0]
+    severity_confidence = float(_severity_clf.predict_proba(vec).max()) * 100
+
     entities = extract_entities(raw_text)
     safe_text = redact_pii(raw_text)
     routed_to = ROUTING_TABLE.get(category, "IT Support (triage)")
@@ -31,6 +36,8 @@ def process_report(raw_text: str) -> dict:
     return {
         "category": category,
         "severity": severity,
+        "score": round(category_confidence, 1),
+        "severity_score": round(severity_confidence, 1),
         "entities": entities,
         "cleaned_text": safe_text,
         "routed_to": routed_to,
@@ -41,8 +48,6 @@ if __name__ == "__main__":
     "My name is Chidi Okafor, phone 08034567890, account REF-4021. Someone accessed my account from 197.210.54.12 and I clicked http://fake-bank-login.tk before realizing it was fake.",
     "Account STAFFID-3391 was used to log in from an unrecognized device this morning.",
     ]
-
-    for t in test_cases:
-        result = process_report(t)
-        print(result)
-        print()
+    print(process_report("He told me to sent my credit card details and I sent it."))
+    print(process_report("Someone rang me pretending to be from the bank and I ended up giving them my card number and CVV."))
+    print(process_report("I refused to give my PIN when someone called asking for it."))

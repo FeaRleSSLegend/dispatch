@@ -17,7 +17,6 @@ import { Route as NewReportRouteImport } from './routes/new-report'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminSignupRouteImport } from './routes/admin.signup'
 import { Route as IncidentsIndexRouteImport } from './routes/incidents.index'
 import { Route as IncidentsIncidentIdRouteImport } from './routes/incidents.$incidentId'
 
@@ -61,11 +60,6 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSignupRoute = AdminSignupRouteImport.update({
-  id: '/admin/signup',
-  path: '/admin/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IncidentsIndexRoute = IncidentsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -86,7 +80,6 @@ export interface FileRoutesByFullPath {
   '/report': typeof ReportRoute
   '/signup': typeof SignupRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/signup': typeof AdminSignupRoute
   '/incidents/$incidentId': typeof IncidentsIncidentIdRoute
   '/incidents/': typeof IncidentsIndexRoute
 }
@@ -98,7 +91,6 @@ export interface FileRoutesByTo {
   '/report': typeof ReportRoute
   '/signup': typeof SignupRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/signup': typeof AdminSignupRoute
   '/incidents/$incidentId': typeof IncidentsIncidentIdRoute
   '/incidents': typeof IncidentsIndexRoute
 }
@@ -112,7 +104,6 @@ export interface FileRoutesById {
   '/report': typeof ReportRoute
   '/signup': typeof SignupRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/signup': typeof AdminSignupRoute
   '/incidents/$incidentId': typeof IncidentsIncidentIdRoute
   '/incidents/': typeof IncidentsIndexRoute
 }
@@ -127,7 +118,6 @@ export interface FileRouteTypes {
     | '/report'
     | '/signup'
     | '/admin/login'
-    | '/admin/signup'
     | '/incidents/$incidentId'
     | '/incidents/'
   fileRoutesByTo: FileRoutesByTo
@@ -139,7 +129,6 @@ export interface FileRouteTypes {
     | '/report'
     | '/signup'
     | '/admin/login'
-    | '/admin/signup'
     | '/incidents/$incidentId'
     | '/incidents'
   id:
@@ -152,7 +141,6 @@ export interface FileRouteTypes {
     | '/report'
     | '/signup'
     | '/admin/login'
-    | '/admin/signup'
     | '/incidents/$incidentId'
     | '/incidents/'
   fileRoutesById: FileRoutesById
@@ -166,7 +154,6 @@ export interface RootRouteChildren {
   ReportRoute: typeof ReportRoute
   SignupRoute: typeof SignupRoute
   AdminLoginRoute: typeof AdminLoginRoute
-  AdminSignupRoute: typeof AdminSignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -227,13 +214,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/signup': {
-      id: '/admin/signup'
-      path: '/admin/signup'
-      fullPath: '/admin/signup'
-      preLoaderRoute: typeof AdminSignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/incidents/': {
       id: '/incidents/'
       path: '/'
@@ -274,7 +254,6 @@ const rootRouteChildren: RootRouteChildren = {
   ReportRoute: ReportRoute,
   SignupRoute: SignupRoute,
   AdminLoginRoute: AdminLoginRoute,
-  AdminSignupRoute: AdminSignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

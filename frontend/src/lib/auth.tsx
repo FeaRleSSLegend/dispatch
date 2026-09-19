@@ -1,58 +1,88 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react"
 
-export type Role = "admin" | "user";
-export type Session = { name: string; email: string; role: Role };
+import { api, getToken, setToken, type User } from "@/lib/api"
 
-const STORAGE_KEY = "dispatch.session";
+export type Session = User
 
 type AuthValue = {
-  session: Session | null;
-  ready: boolean;
-  signIn: (email: string, role: Role, name?: string) => void;
-  signOut: () => void;
-};
+  session: Session | null
+  ready: boolean
+  signIn: (email: string, password: string) => Promise<Session>
+  signUp: (email: string, name: string, password: string) => Promise<Session>
+  signOut: () => void
+}
 
-const AuthContext = createContext<AuthValue | null>(null);
+const AuthContext = createContext<AuthValue | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null);
-  const [ready, setReady] = useState(false);
+  const [session, setSession] = useState<Session | null>(null)
+  const [ready, setReady] = useState(false)
 
+  // On boot: if there's a token, verify it against /api/auth/me
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) setSession(JSON.parse(raw) as Session);
-    } catch {
-      /* ignore malformed session */
+    let cancelled = false
+    async function boot() {
+      const token = getToken()
+      if (!token) {
+        if (!cancelled) setReady(true)
+        return
+      }
+      try {
+        const user = await api.me()
+        if (!cancelled) setSession(user)
+      } catch {
+        // Token invalid/expired — clear and move on
+        setToken(null)
+      } finally {
+        if (!cancelled) setReady(true)
+      }
     }
-    setReady(true);
-  }, []);
+    boot()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
-  const signIn = useCallback((email: string, role: Role, name?: string) => {
-    const next: Session = { email, role, name: name?.trim() || email.split("@")[0] || "Operator" };
-    setSession(next);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } catch {
-      /* storage unavailable */
-    }
-  }, []);
+  const signIn = useCallback(async (email: string, password: string) => {
+    const { token, user } = await api.login(email, password)
+    setToken(token)
+    setSession(user)
+    return user
+  }, [])
+
+  const signUp = useCallback(
+    async (email: string, name: string, password: string) => {
+      const { token, user } = await api.signup(email, name, password)
+      setToken(token)
+      setSession(user)
+      return user
+    },
+    [],
+  )
 
   const signOut = useCallback(() => {
-    setSession(null);
-    try {
-      window.localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      /* storage unavailable */
-    }
-  }, []);
+    setToken(null)
+    setSession(null)
+  }, [])
 
-  const value = useMemo(() => ({ session, ready, signIn, signOut }), [session, ready, signIn, signOut]);
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const value = useMemo(
+    () => ({ session, ready, signIn, signUp, signOut }),
+    [session, ready, signIn, signUp, signOut],
+  )
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
-  return ctx;
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error("useAuth must be used inside AuthProvider")
+  return ctx
 }

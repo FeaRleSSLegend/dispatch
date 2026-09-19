@@ -1,99 +1,101 @@
-export type Severity = "Critical" | "High" | "Medium" | "Low";
-export type IncidentStatus = "Escalated" | "Investigating" | "Pending" | "Contained";
+// Incident types mirror the output of the ML pipeline
+// (ML_pipeline/src/pipeline.py → process_report()).
+// The frontend reads from the API; this file holds types + display helpers.
+
+export type Category =
+  | "phishing"
+  | "account_takeover"
+  | "malware"
+  | "data_leak"
+  | "suspicious_activity"
+
+export type Severity = "low" | "medium" | "high"
+
+export type IncidentStatus = "new" | "triaged" | "investigating" | "resolved"
+
+export type Entities = {
+  ips: string[]
+  urls: string[]
+  account_refs: string[]
+  organizations: string[]
+  time_references: string[]
+}
 
 export type Incident = {
-  id: string;
-  type: string;
-  severity: Severity;
-  department: string;
-  time: string;
-  status: IncidentStatus;
-  score: number;
-  report: string;
-  indicators: string[];
-  duplicate: string;
-  route: string;
-  redacted: string;
-};
+  id: string
+  category: Category
+  severity: Severity
+  status: IncidentStatus
+  routed_to: string
+  report: string
+  redacted: string
+  entities: Entities
+  submitted_at: string
+  duplicate_of: string | null
+  score: number | null
+  department: string
+}
 
-export const incidents: Incident[] = [
-  {
-    id: "INC-2841",
-    type: "Credential compromise",
-    severity: "Critical",
-    department: "Finance",
-    time: "8 min ago",
-    status: "Escalated",
-    score: 96,
-    report: "An accounts payable specialist received repeated MFA prompts after opening a supplier invoice. A successful sign-in from an unfamiliar IP followed, and a new payment beneficiary was created.",
-    indicators: ["IP 185.220.101.14", "Impossible travel detected", "New OAuth grant", "MFA fatigue pattern"],
-    duplicate: "Possible match · INC-2819 (82%)",
-    route: "Identity Response · Finance Security",
-    redacted: "An accounts payable specialist received repeated MFA prompts after opening a supplier invoice. A successful sign-in from [IP REDACTED] followed, and a new payment beneficiary was created.",
-  },
-  {
-    id: "INC-2837",
-    type: "Malware detection",
-    severity: "High",
-    department: "Operations",
-    time: "24 min ago",
-    status: "Investigating",
-    score: 84,
-    report: "Endpoint protection blocked an unsigned executable launched from a compressed attachment on an operations workstation.",
-    indicators: ["SHA256 4a8d…19ce", "Unsigned executable", "Archive attachment"],
-    duplicate: "No likely duplicate",
-    route: "Endpoint Security",
-    redacted: "Endpoint protection blocked an unsigned executable on workstation [DEVICE REDACTED].",
-  },
-  {
-    id: "INC-2832",
-    type: "Sensitive data exposure",
-    severity: "High",
-    department: "People",
-    time: "41 min ago",
-    status: "Pending",
-    score: 78,
-    report: "A spreadsheet containing employee contact details was shared using a public link.",
-    indicators: ["Public sharing enabled", "1,284 records", "External access logged"],
-    duplicate: "Possible match · INC-2794 (61%)",
-    route: "Data Protection · People Operations",
-    redacted: "A spreadsheet containing [COUNT REDACTED] employee contact records was shared using a public link.",
-  },
-  {
-    id: "INC-2828",
-    type: "Policy violation",
-    severity: "Medium",
-    department: "Engineering",
-    time: "1 hr ago",
-    status: "Investigating",
-    score: 57,
-    report: "A repository token was committed to a private development branch and detected by secret scanning.",
-    indicators: ["Repository secret", "Token revoked", "Private branch"],
-    duplicate: "No likely duplicate",
-    route: "Application Security",
-    redacted: "A repository token was committed to [REPOSITORY REDACTED] and detected by secret scanning.",
-  },
-  {
-    id: "INC-2823",
-    type: "Suspicious email",
-    severity: "Low",
-    department: "Sales",
-    time: "2 hrs ago",
-    status: "Contained",
-    score: 28,
-    report: "A sales representative reported a suspicious calendar invitation with an external attachment.",
-    indicators: ["External sender", "Attachment quarantined"],
-    duplicate: "No likely duplicate",
-    route: "Messaging Security",
-    redacted: "A sales representative reported a suspicious calendar invitation with an external attachment.",
-  },
-];
+// Populated by the API once the backend is wired up.
+export const incidents: Incident[] = []
 
-export const severityRank: Record<Severity, number> = { Critical: 4, High: 3, Medium: 2, Low: 1 };
+// --- Display helpers ------------------------------------------------------
+
+export const severityRank: Record<Severity, number> = {
+  high: 3,
+  medium: 2,
+  low: 1,
+}
 
 export const severityClass: Record<Severity, string> = {
-  Critical: "severity-critical",
-  High: "severity-high",
-  Medium: "severity-medium",
-  Low: "severity-low",
-};
+  high: "severity-high",
+  medium: "severity-medium",
+  low: "severity-low",
+}
+
+export const severityLabel: Record<Severity, string> = {
+  high: "High",
+  medium: "Medium",
+  low: "Low",
+}
+
+export function formatCategory(category: Category): string {
+  return category
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
+}
+
+export function flattenEntities(entities: Entities): string[] {
+  return [
+    ...entities.ips,
+    ...entities.urls,
+    ...entities.account_refs,
+    ...entities.organizations,
+    ...entities.time_references,
+  ]
+}
+
+export function entitiesByGroup(entities: Entities): Array<{ label: string; values: string[] }> {
+  const groups = [
+    { label: "IP addresses", values: entities.ips },
+    { label: "URLs", values: entities.urls },
+    { label: "Account refs", values: entities.account_refs },
+    { label: "Organizations", values: entities.organizations },
+    { label: "Time references", values: entities.time_references },
+  ]
+  return groups.filter((g) => g.values.length > 0)
+}
+
+export function timeAgo(iso: string): string {
+  const then = new Date(iso).getTime()
+  if (Number.isNaN(then)) return iso
+  const seconds = Math.max(0, Math.floor((Date.now() - then) / 1000))
+  if (seconds < 60) return `${seconds}s ago`
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) return `${minutes} min ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours} hr${hours === 1 ? "" : "s"} ago`
+  const days = Math.floor(hours / 24)
+  return `${days} day${days === 1 ? "" : "s"} ago`
+}

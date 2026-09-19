@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import {
   Outlet,
   Link,
@@ -6,11 +6,11 @@ import {
   useRouter,
   useNavigate,
   useRouterState,
-} from '@tanstack/react-router'
-import { useEffect } from 'react'
-import { DashboardShell } from '@/components/dashboard-shell'
-import { ReporterShell } from '@/components/reporter-shell'
-import { AuthProvider, useAuth } from '@/lib/auth'
+} from "@tanstack/react-router"
+import { useEffect } from "react"
+import { DashboardShell } from "@/components/dashboard-shell"
+import { ReporterShell } from "@/components/reporter-shell"
+import { AuthProvider, useAuth } from "@/lib/auth"
 
 function NotFoundComponent() {
   return (
@@ -34,12 +34,18 @@ function NotFoundComponent() {
   )
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error)
+function ErrorComponent({
+  error,
+  reset,
+}: {
+  error: unknown
+  reset: () => void
+}) {
   const router = useRouter()
+  const message = error instanceof Error ? error.message : String(error)
 
   useEffect(() => {
-    // Add error reporting here if you wire one up later.
+    console.error("Route error:", error)
   }, [error])
 
   return (
@@ -51,6 +57,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
+        <p className="mt-2 break-all font-mono text-[10px] text-destructive">{message}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -91,7 +98,7 @@ function RootComponent() {
   )
 }
 
-const publicPaths = ['/login', '/signup', '/admin/login', '/admin/signup']
+const publicPaths = ["/login", "/signup", "/admin/login"]
 
 function AuthGate() {
   const { session, ready } = useAuth()
@@ -101,27 +108,40 @@ function AuthGate() {
 
   useEffect(() => {
     if (!ready) return
+
     if (!session) {
-      if (!isPublic) navigate({ to: '/login', replace: true })
+      if (!isPublic) navigate({ to: "/login", replace: true })
       return
     }
-    if (session.role === 'user' && pathname !== '/report') {
-      navigate({ to: '/report', replace: true })
+
+    // Users belong on /report; admins belong everywhere except /report when logged in
+    if (session.role === "user" && pathname !== "/report") {
+      navigate({ to: "/report", replace: true })
     }
-    if (session.role === 'admin' && (pathname === '/report' || isPublic)) {
-      navigate({ to: '/', replace: true })
+    if (session.role === "admin" && isPublic) {
+      navigate({ to: "/", replace: true })
     }
   }, [ready, session, pathname, isPublic, navigate])
 
+  // Public pages render immediately
   if (isPublic) return <Outlet />
-  if (!ready || !session) return <div className="min-h-screen bg-background" />
-  if (session.role === 'user') {
+
+  // Not ready yet — show a blank shell while we check the token
+  if (!ready) return <div className="min-h-screen bg-background" />
+
+  // Not logged in — will be redirected by the effect above
+  if (!session) return <div className="min-h-screen bg-background" />
+
+  // User role → ReporterShell
+  if (session.role === "user") {
     return (
       <ReporterShell>
         <Outlet />
       </ReporterShell>
     )
   }
+
+  // Admin role → DashboardShell
   return (
     <DashboardShell>
       <Outlet />

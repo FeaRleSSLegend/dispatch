@@ -7,6 +7,9 @@ IP_PATTERN = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
 URL_PATTERN = re.compile(r"https?://[^\s]+")
 ACCOUNT_PATTERN = re.compile(r"\b(?:ACC|STAFFID|EMP|REF)-?\d{3,6}\b", re.IGNORECASE)
 
+# Common finance/security acronyms spaCy's NER sometimes misreads as ORG names
+NON_ORG_ACRONYMS = {"CVV", "PIN", "OTP", "BVN", "NIN", "ATM", "USSD", "SMS", "IT"}
+
 def extract_entities(text: str) -> dict:
     doc = nlp(text)
 
@@ -14,10 +17,11 @@ def extract_entities(text: str) -> dict:
     urls = URL_PATTERN.findall(text)
     account_refs = ACCOUNT_PATTERN.findall(text)
 
-    orgs = [ent.text for ent in doc.ents if ent.label_ == "ORG"]
+    orgs = [
+        ent.text for ent in doc.ents
+        if ent.label_ == "ORG" and ent.text.upper() not in NON_ORG_ACRONYMS
+    ]
 
-    # Filter out DATE/TIME entities that are actually IPs or phone numbers
-    # spaCy misclassified, since those are already captured above or aren't real dates.
     phone_pattern = re.compile(r"\b0[789][01]\d{8}\b")
     dates_times = [
         ent.text for ent in doc.ents
