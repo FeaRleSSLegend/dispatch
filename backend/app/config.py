@@ -23,7 +23,11 @@ class Settings(BaseSettings):
     jwt_expires_minutes: int = 60 * 24 * 7
 
     api_version: str = "0.1.0"
-    cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    cors_origins: list[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://dispatch-ttkq.vercel.app",
+    ]
 
 
 settings = Settings()
