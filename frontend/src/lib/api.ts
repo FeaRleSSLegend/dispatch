@@ -6,8 +6,11 @@ import type {
   Severity,
 } from "@/lib/incidents"
 
-const API_URL =
-  (import.meta.env["VITE_API_URL"] as string | undefined) ?? "http://localhost:8000"
+// In development, same-origin /api is forwarded by Vite. This avoids browser
+// CORS failures and keeps working if Vite selects a port other than 5173.
+// Production uses same-origin /api unless VITE_API_URL is explicitly supplied.
+const configuredApiUrl = (import.meta.env["VITE_API_URL"] as string | undefined)?.trim()
+const API_URL = import.meta.env.DEV ? "" : (configuredApiUrl ?? "").replace(/\/+$/, "")
 
 const TOKEN_KEY = "dispatch.token"
 
@@ -39,10 +42,27 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
   if (token) headers["Authorization"] = `Bearer ${token}`
 
-  const res = await fetch(`${API_URL}${path}`, { ...init, headers })
+  let res: Response
+  try {
+    res = await fetch(`${API_URL}${path}`, { ...init, headers })
+  } catch (error) {
+    // Network/CORS failures happen before the server can check credentials.
+    // Never report them as an invalid password.
+    if (error instanceof TypeError) {
+      throw new ApiError(
+        "Unable to connect to the Dispatch API. Check that the backend is running and the API address is configured.",
+        0,
+      )
+    }
+    throw error
+  }
 
   if (!res.ok) {
-    let message = `Request failed: ${res.status}`
+    let message = res.status === 502 || res.status === 503 || res.status === 504
+      ? "The Dispatch API is unavailable. Check that the backend is running."
+      : res.status >= 500
+        ? `The server encountered an error (${res.status}). Check the backend logs.`
+        : `Request failed: ${res.status}`
     try {
       const body = await res.json()
       if (body?.detail) {

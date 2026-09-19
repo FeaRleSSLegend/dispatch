@@ -39,7 +39,6 @@ function SignupPage() {
 
   return (
     <AuthLayout
-      eyebrow="Reporter access"
       title="Create account"
       description="Set up access so you can file incident reports."
       footer={

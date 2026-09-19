@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 
 import { PageHeading } from "@/components/incident-ui"
-import { ErrorState, LoadingState } from "@/components/query-states"
+import { AnalyticsSkeleton, ErrorState } from "@/components/query-states"
 import { useAnalytics } from "@/hooks/useIncidents"
 import { formatCategory, type Category } from "@/lib/incidents"
 
@@ -18,17 +18,22 @@ const SEVERITY_COLORS: Record<string, string> = {
 function Analytics() {
   const { data, isLoading, isError, error, refetch } = useAnalytics()
 
-  if (isLoading) return <LoadingState label="Loading analytics…" />
+  if (isLoading) return (
+    <div>
+      <PageHeading eyebrow="Workspace / Analytics" title="Analytics" description="Seven-day incident volume, with overall severity and case totals." />
+      <AnalyticsSkeleton />
+    </div>
+  )
 
   if (isError || !data) {
     return (
       <div>
         <PageHeading
-          eyebrow="Response intelligence"
+          eyebrow="Workspace / Analytics"
           title="Analytics"
-          description="Incident volume, severity distribution, and response performance."
+          description="Incident volume, severity distribution, and case activity."
         />
-        <div className="rounded-lg border border-border bg-card">
+        <div className="data-surface">
           <ErrorState
             message={error instanceof Error ? error.message : "Unknown error"}
             onRetry={() => refetch()}
@@ -41,6 +46,7 @@ function Analytics() {
   const maxCount = Math.max(1, ...data.volume_by_day.map((d) => d.count))
   const totalSeverity =
     Object.values(data.severity_distribution).reduce((a, b) => a + b, 0) || 1
+  const weeklyCount = data.volume_by_day.reduce((sum, day) => sum + day.count, 0)
 
   const severityRows = ["high", "medium", "low"].map((level) => {
     const count = data.severity_distribution[level] ?? 0
@@ -58,9 +64,9 @@ function Analytics() {
   return (
     <div>
       <PageHeading
-        eyebrow="Response intelligence"
+        eyebrow="Workspace / Analytics"
         title="Analytics"
-        description="A seven-day view of incident volume, severity distribution, and operational response performance."
+        description="Seven-day incident volume, with overall severity and case totals."
       />
 
       <div className="grid gap-5 xl:grid-cols-[1.4fr_.6fr]">
@@ -71,7 +77,7 @@ function Analytics() {
               <p className="mt-2 text-xs text-muted-foreground">Last seven days</p>
             </div>
             <p className="font-display text-3xl font-semibold">
-              {data.kpis.total_incidents}
+              {weeklyCount}
             </p>
           </div>
           <div className="mt-10 flex h-56 items-end gap-3 border-b border-border px-2">
@@ -79,7 +85,7 @@ function Analytics() {
               <div key={day.date} className="flex h-full flex-1 flex-col justify-end gap-3">
                 <div className="relative flex-1">
                   <div
-                    className="absolute inset-x-0 bottom-0 rounded-t-sm bg-primary/70"
+                    className="absolute inset-x-0 bottom-0 rounded-t-xl bg-primary/80"
                     style={{ height: `${(day.count / maxCount) * 100}%` }}
                   />
                 </div>
@@ -95,6 +101,7 @@ function Analytics() {
 
         <section className="panel">
           <p className="section-label">Severity distribution</p>
+          <p className="mt-2 text-xs text-muted-foreground">All incidents</p>
           <div className="mt-7 space-y-5">
             {severityRows.map((s) => (
               <div key={s.level}>
@@ -117,19 +124,19 @@ function Analytics() {
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <article className="rounded-lg border border-border bg-card p-5">
+        <article className="stat-card">
           <p className="text-xs text-muted-foreground">Total incidents</p>
           <p className="mt-4 font-display text-2xl font-semibold">
             {data.kpis.total_incidents}
           </p>
         </article>
-        <article className="rounded-lg border border-border bg-card p-5">
+        <article className="stat-card">
           <p className="text-xs text-muted-foreground">Active</p>
           <p className="mt-4 font-display text-2xl font-semibold">
             {data.kpis.active}
           </p>
         </article>
-        <article className="rounded-lg border border-border bg-card p-5">
+        <article className="stat-card">
           <p className="text-xs text-muted-foreground">Top category</p>
           <p className="mt-4 font-display text-2xl font-semibold">{topCategory}</p>
         </article>

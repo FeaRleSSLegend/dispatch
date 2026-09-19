@@ -1,0 +1,72 @@
+/* Page primitives, cards, forms, responsive incident presentation. */
+@layer components {
+  .page-heading { display: flex; min-width: 0; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.2rem; margin-bottom: 1.9rem; }
+  .page-eyebrow { margin-bottom: .65rem; color: var(--muted-foreground); font-size: .68rem; font-weight: 620; letter-spacing: .13em; text-transform: uppercase; }
+  .page-title { overflow-wrap: anywhere; font-size: clamp(1.9rem, 3.4vw, 3rem); font-weight: 620; letter-spacing: -.065em; line-height: 1.12; }
+  .page-description { max-width: 610px; margin-top: .8rem; color: var(--muted-foreground); font-size: .84rem; line-height: 1.75; }
+  .stat-card { display: flex; min-width: 0; min-height: 170px; flex-direction: column; justify-content: space-between; gap: 1rem; padding: 1.35rem; border: 1px solid var(--border); border-radius: 27px; background: var(--card); transition: border-color .25s ease, transform .25s ease, background-color .25s ease; }
+  .stat-card:hover { transform: translateY(-3px); border-color: color-mix(in oklab, var(--foreground) 37%, transparent); background: var(--secondary); }
+  .stat-card-heading { display: flex; align-items: center; justify-content: space-between; gap: .5rem; color: var(--muted-foreground); font-size: .76rem; }
+  .stat-card-heading svg { width: 17px; height: 17px; stroke-width: 1.6; }
+  .stat-card-value { font-size: clamp(2rem, 3vw, 2.8rem); line-height: 1.05; font-weight: 570; letter-spacing: -.07em; font-variant-numeric: tabular-nums; }
+  .stat-card-caption { margin-top: .55rem; color: var(--muted-foreground); font-size: .73rem; }
+  .section-heading { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin: 0 0 1rem; }
+  .section-title { font-size: 1.15rem; font-weight: 600; letter-spacing: -.04em; }
+  .section-subtitle { margin-top: .4rem; color: var(--muted-foreground); font-size: .77rem; line-height: 1.5; }
+  .text-action { display: inline-flex; align-items: center; gap: .4rem; min-height: 40px; font-size: .77rem; font-weight: 600; color: var(--foreground); text-decoration: none; transition: opacity .2s ease; }
+  .text-action:hover { opacity: .68; }
+  .data-surface { overflow: hidden; border: 1px solid var(--border); border-radius: 27px; background: var(--card); }
+  .incident-table { width: 100%; min-width: 780px; border-collapse: collapse; text-align: left; }
+  .incident-table thead { background: var(--secondary); color: var(--muted-foreground); font-size: .66rem; letter-spacing: .085em; text-transform: uppercase; }
+  .incident-table th { padding: 1.2rem 1rem; font-weight: 550; white-space: nowrap; }
+  .incident-table td { padding: 1.05rem 1rem; font-size: .76rem; }
+  .incident-table tbody tr { border-top: 1px solid var(--border); transition: background-color .2s ease; }
+  .incident-table tbody tr:hover { background: var(--secondary); }
+  .incident-open { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid var(--border); border-radius: 12px; color: var(--foreground); transition: transform .2s ease, background-color .2s ease; }
+  .incident-open:hover { background: var(--accent); transform: translateX(2px); }
+  .incident-mobile-list { display: grid; gap: .7rem; padding: .7rem; }
+  .incident-mobile-card { display: block; min-width: 0; padding: 1.15rem; border: 1px solid var(--border); border-radius: 21px; background: var(--secondary); color: var(--foreground); text-decoration: none; transition: border-color .2s ease, background-color .2s ease; }
+  .incident-mobile-card:hover { border-color: var(--muted-foreground); background: var(--accent); }
+  .incident-mobile-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
+  .incident-mobile-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .7rem; margin-top: 1rem; color: var(--muted-foreground); font-size: .71rem; }
+  .app-field { width: 100%; min-height: 48px; border: 1px solid var(--input); border-radius: 16px; background: var(--background); padding: .75rem 1rem; color: var(--foreground); font-size: .82rem; outline: none; transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease; }
+  .app-field:hover { border-color: var(--muted-foreground); }
+  .app-field:focus { border-color: var(--foreground); box-shadow: 0 0 0 3px #ffffff10; }
+  .app-field:focus-visible { outline: none; }
+  .app-textarea { width: 100%; min-height: 270px; resize: vertical; border: 1px solid var(--input); border-radius: 19px; background: var(--background); padding: 1rem; color: var(--foreground); font-size: .83rem; line-height: 1.8; outline: none; transition: border-color .2s ease, box-shadow .2s ease; }
+  .app-textarea:focus { border-color: var(--foreground); box-shadow: 0 0 0 3px #ffffff10; }
+  .app-textarea:focus-visible { outline: none; }
+  .app-select { appearance: auto; }
+  .auth-screen { display: grid; min-height: 100dvh; grid-template-columns: minmax(0, 1fr); background: var(--background); }
+  .auth-aside { display: none; }
+  .auth-aside-image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .auth-main { display: flex; min-width: 0; flex-direction: column; justify-content: center; padding: 2rem clamp(1.25rem, 5vw, 5rem); }
+  .auth-mobile-brand { align-self: flex-start; color: var(--foreground); font-size: 1.25rem; font-weight: 700; letter-spacing: -.05em; text-decoration: none; }
+  .auth-mobile-brand span { color: var(--muted-foreground); }
+  .auth-form-wrap { width: 100%; max-width: 425px; margin: 3.5rem auto; }
+  .auth-title { font-size: clamp(2.25rem, 4vw, 3.25rem); font-weight: 620; line-height: 1.1; letter-spacing: -.065em; }
+  .auth-description { margin-top: .8rem; max-width: 385px; color: var(--muted-foreground); font-size: .88rem; line-height: 1.65; }
+  .auth-fields { margin-top: 2.25rem; }
+  .auth-footer { margin-top: 1.8rem; color: var(--muted-foreground); font-size: .8rem; line-height: 1.8; }
+  .auth-footer a { color: var(--foreground); font-weight: 620; text-underline-offset: 4px; }
+  .auth-footer a:hover { text-decoration: underline; }
+  .data-skeleton { position: relative; overflow: hidden; border-radius: 10px; background: var(--accent); }
+  .data-skeleton::after { position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, #ffffff0b, transparent); animation: skeleton-shimmer 1.65s ease-in-out infinite; content: ""; }
+  @media (min-width: 1024px) {
+    .auth-screen { grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr); padding: 14px; gap: clamp(.5rem, 1.5vw, 1.5rem); }
+    .auth-aside { display: block; position: relative; min-height: calc(100dvh - 28px); overflow: hidden; border: 1px solid var(--border); border-radius: 30px; background: #111516; }
+    .auth-main { padding: 2.4rem clamp(2rem, 4vw, 5rem); }
+    .auth-mobile-brand { display: none; }
+    .auth-form-wrap { margin: auto; }
+  }
+  @media (max-width: 639px) {
+    .page-heading { margin-bottom: 1.4rem; }
+    .page-heading > :last-child:not(:first-child) { max-width: 100%; }
+    .stat-card { min-height: 147px; border-radius: 22px; padding: 1rem; }
+    .stat-card-value { font-size: 2.05rem; }
+    .stat-card-caption { font-size: .68rem; }
+    .auth-main { justify-content: flex-start; padding-top: 2rem; }
+    .auth-form-wrap { margin: 4rem auto 1.5rem; }
+    .panel { border-radius: 22px; }
+  }
+}

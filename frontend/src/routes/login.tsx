@@ -34,7 +34,6 @@ function LoginPage() {
 
   return (
     <AuthLayout
-      eyebrow="Reporter access"
       title="Sign in"
       description="Report a security concern to the incident response team."
       footer={

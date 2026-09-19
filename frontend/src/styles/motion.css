@@ -1,0 +1,20 @@
+/* CSS-only motion: no additional runtime/dependency; respects reduced motion. */
+@keyframes page-reveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes sheet-reveal { from { opacity: 0; transform: translateY(13px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes skeleton-shimmer { to { transform: translateX(100%); } }
+@layer components {
+  .page-enter { animation: page-reveal .42s cubic-bezier(.2,.85,.25,1) both; }
+  .page-enter .stat-card { animation: page-reveal .45s cubic-bezier(.2,.85,.25,1) both; }
+  .page-enter .stat-card:nth-child(2) { animation-delay: 55ms; }
+  .page-enter .stat-card:nth-child(3) { animation-delay: 100ms; }
+  .page-enter .stat-card:nth-child(4) { animation-delay: 145ms; }
+  .account-sheet { animation: sheet-reveal .25s cubic-bezier(.2,.8,.2,1) both; }
+  .interactive-button { transition: transform .18s cubic-bezier(.2,.8,.2,1), background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  .interactive-button:not(:disabled):hover { transform: translateY(-2px); }
+  .interactive-button:not(:disabled):active { transform: translateY(1px) scale(.985); }
+  .interactive-button:disabled { cursor: not-allowed; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    .page-enter, .page-enter .stat-card, .account-sheet { animation: none !important; }
+  }
+}

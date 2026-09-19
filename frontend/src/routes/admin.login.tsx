@@ -39,7 +39,6 @@ function AdminLoginPage() {
 
   return (
     <AuthLayout
-      eyebrow="Analyst access"
       title="Admin sign in"
       description="Enter the incident command workspace."
       footer={

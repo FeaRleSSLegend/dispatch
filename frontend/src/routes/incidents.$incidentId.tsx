@@ -1,7 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import {
   ArrowLeft,
-  CheckCircle2,
   Copy,
   GitMerge,
   Route as RouteIcon,
@@ -23,7 +22,9 @@ function IncidentDetail() {
   const { data: incident, isLoading, isError, error, refetch } = useIncident(incidentId)
 
   if (isLoading) {
-    return <LoadingState label="Loading incident…" />
+    return (
+      <div><PageHeading eyebrow="Workspace / Incident review" title="Incident details" description="Retrieving incident information." /><LoadingState label="Loading incident" rows={5} /></div>
+    )
   }
 
   if (isError || !incident) {
@@ -36,7 +37,7 @@ function IncidentDetail() {
           <ArrowLeft className="size-3.5" />
           Back to queue
         </Link>
-        <div className="rounded-lg border border-border bg-card">
+        <div className="data-surface">
           <ErrorState
             message={
               error instanceof Error
@@ -63,25 +64,17 @@ function IncidentDetail() {
       </Link>
 
       <PageHeading
-        eyebrow="Incident review"
+        eyebrow="Workspace / Incident review"
         title={incident.id}
         description={`${formatCategory(incident.category)} · Submitted ${timeAgo(incident.submitted_at)}`}
-        action={
-          <div className="flex items-center gap-3">
-            <SeverityBadge severity={incident.severity} />
-            <Button size="sm">
-              <CheckCircle2 className="size-4" />
-              Assign to me
-            </Button>
-          </div>
-        }
+        action={<SeverityBadge severity={incident.severity} />}
       />
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,.75fr)]">
         <div className="space-y-5">
           <section className="panel">
             <p className="section-label">Original report</p>
-            <p className="mt-4 text-sm leading-7 text-foreground/90">{incident.report}</p>
+            <p className="mt-4 break-words text-sm leading-7 text-foreground/90">{incident.report}</p>
           </section>
 
           <section className="panel">
@@ -114,7 +107,7 @@ function IncidentDetail() {
               <p className="section-label">PII-redacted version</p>
               <ShieldCheck className="size-4 text-success" />
             </div>
-            <p className="mt-4 text-sm leading-7 text-muted-foreground">{incident.redacted}</p>
+            <p className="mt-4 break-words text-sm leading-7 text-muted-foreground">{incident.redacted}</p>
             <Button
               variant="ghost"
               size="sm"

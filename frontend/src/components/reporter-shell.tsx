@@ -1,37 +1,29 @@
-import { useNavigate } from "@tanstack/react-router";
-import { LogOut, Shield } from "lucide-react";
-import type { ReactNode } from "react";
+import { useNavigate } from "@tanstack/react-router"
+import { LogOut, Shield } from "lucide-react"
+import type { ReactNode } from "react"
 
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/lib/auth"
 
 export function ReporterShell({ children }: { children: ReactNode }) {
-  const { session, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { session, signOut } = useAuth()
+  const navigate = useNavigate()
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-border bg-background/90 px-5 backdrop-blur md:px-8">
-        <div className="flex items-center gap-3">
-          <span className="flex size-8 items-center justify-center rounded-md border border-primary/30 bg-primary/10 text-primary"><Shield className="size-4" /></span>
-          <div>
-            <p className="font-display text-sm font-semibold tracking-wide">Dispatch</p>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Report an incident</p>
-          </div>
+    <div className="app-shell">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:p-3 focus:text-primary-foreground">Skip to content</a>
+      <header className="reporter-header">
+        <div className="app-brand">
+          <span className="brand-mark"><Shield size={20} strokeWidth={1.6} aria-hidden="true" /></span>
+          <div className="min-w-0"><p className="brand-name">dispatch<span className="text-muted-foreground">.</span></p><p className="brand-caption">Incident reporting</p></div>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="hidden text-xs text-muted-foreground sm:inline">{session?.email}</span>
-          <button
-            onClick={() => {
-              signOut();
-              navigate({ to: "/login", replace: true });
-            }}
-            className="flex h-9 items-center gap-2 rounded-md border border-border bg-secondary/40 px-3 text-xs text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <LogOut className="size-3.5" />Sign out
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="hidden max-w-48 truncate text-xs text-muted-foreground sm:block">{session?.email}</span>
+          <button type="button" onClick={() => { signOut(); navigate({ to: "/login", replace: true }) }} className="interactive-button flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-2xl border border-border bg-card px-3.5 text-xs font-medium text-foreground hover:bg-secondary" aria-label="Sign out">
+            <LogOut size={16} strokeWidth={1.7} aria-hidden="true" /><span>Sign out</span>
           </button>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-[1100px] p-5 md:p-8 lg:p-10">{children}</main>
+      <main id="main-content" className="reporter-content"><div className="page-enter">{children}</div></main>
     </div>
-  );
+  )
 }

@@ -1,0 +1,12 @@
+## Tasks
+- [x] Build shared SENTINEL shell and design system
+- [x] Build overview and priority queue
+- [x] Build incident detail view
+- [x] Build new report analysis flow
+- [x] Build analytics view
+- [ ] Add responder workspace
+- [ ] Add team management
+- [ ] Add audit log
+- [ ] Add integrations
+- [ ] Add notification and organization settings
+- [ ] Verify every route and interaction

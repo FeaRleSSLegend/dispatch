@@ -42,7 +42,6 @@ function ErrorComponent({
   reset: () => void
 }) {
   const router = useRouter()
-  const message = error instanceof Error ? error.message : String(error)
 
   useEffect(() => {
     console.error("Route error:", error)
@@ -57,7 +56,6 @@ function ErrorComponent({
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
-        <p className="mt-2 break-all font-mono text-[10px] text-destructive">{message}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -126,11 +124,8 @@ function AuthGate() {
   // Public pages render immediately
   if (isPublic) return <Outlet />
 
-  // Not ready yet — show a blank shell while we check the token
-  if (!ready) return <div className="min-h-screen bg-background" />
-
-  // Not logged in — will be redirected by the effect above
-  if (!session) return <div className="min-h-screen bg-background" />
+  // Keep the screen informative while the session is verified or redirect begins.
+  if (!ready || !session) return <SessionLoading />
 
   // User role → ReporterShell
   if (session.role === "user") {
@@ -146,5 +141,16 @@ function AuthGate() {
     <DashboardShell>
       <Outlet />
     </DashboardShell>
+  )
+}
+function SessionLoading() {
+  return (
+    <main className="flex min-h-dvh items-center justify-center bg-background px-5" role="status" aria-label="Preparing your workspace" aria-busy="true">
+      <div className="w-full max-w-sm rounded-3xl border border-border bg-card p-8">
+        <p className="text-lg font-semibold tracking-tight">dispatch<span className="text-muted-foreground">.</span></p>
+        <p className="mt-2 text-xs text-muted-foreground">Preparing your workspace…</p>
+        <div className="mt-9 space-y-3" aria-hidden="true"><div className="data-skeleton h-4 w-2/3" /><div className="data-skeleton h-12 w-full rounded-2xl" /><div className="data-skeleton h-12 w-full rounded-2xl" /></div>
+      </div>
+    </main>
   )
 }

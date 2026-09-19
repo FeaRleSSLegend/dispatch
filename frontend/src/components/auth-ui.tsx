@@ -1,40 +1,41 @@
-import { Link } from "@tanstack/react-router";
-import { Shield } from "lucide-react";
-import type { ReactNode } from "react";
+import { Link } from "@tanstack/react-router"
+import type { ReactNode } from "react"
 
+/** All authentication screens share one image-and-form layout. */
 export function AuthLayout({
-  eyebrow,
   title,
   description,
   children,
   footer,
 }: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  children: ReactNode;
-  footer: ReactNode;
+  title: string
+  description?: string
+  children: ReactNode
+  footer: ReactNode
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-5 py-14">
-      <div className="w-full max-w-sm">
-        <Link to="/login" className="mb-10 flex items-center gap-3">
-          <span className="flex size-9 items-center justify-center rounded-md border border-primary/30 bg-primary/10 text-primary">
-            <Shield className="size-4" />
-          </span>
-          <div>
-            <p className="font-display text-base font-semibold tracking-wide">Dispatch</p>
-            <p className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Incident command</p>
-          </div>
+    <div className="auth-screen">
+      <aside className="auth-aside" aria-hidden="true">
+        <img
+          className="auth-aside-image"
+          src="/incident-map.svg"
+          alt=""
+          decoding="async"
+        />
+      </aside>
+      <main className="auth-main">
+        <Link to="/login" className="auth-mobile-brand" aria-label="Dispatch sign in">
+          dispatch<span aria-hidden="true">.</span>
         </Link>
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">{eyebrow}</p>
-        <h1 className="font-display text-2xl font-semibold">{title}</h1>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
-        <div className="mt-8">{children}</div>
-        <div className="mt-6 text-xs text-muted-foreground">{footer}</div>
-      </div>
+        <div className="auth-form-wrap page-enter">
+          <h1 className="auth-title">{title}</h1>
+          {description && <p className="auth-description">{description}</p>}
+          <div className="auth-fields">{children}</div>
+          <div className="auth-footer">{footer}</div>
+        </div>
+      </main>
     </div>
-  );
+  )
 }
 
 export function Field({
@@ -45,26 +46,28 @@ export function Field({
   placeholder,
   autoComplete,
 }: {
-  label: string;
-  type?: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  autoComplete?: string;
+  label: string
+  type?: string
+  value: string
+  onChange: (value: string) => void
+  placeholder?: string
+  autoComplete?: string
 }) {
-  const id = label.toLowerCase().replace(/[^a-z]+/g, "-");
+  const id = label.toLowerCase().replace(/[^a-z]+/g, "-")
   return (
     <div>
-      <label htmlFor={id} className="section-label">{label}</label>
+      <label htmlFor={id} className="section-label block">{label}</label>
       <input
         id={id}
         type={type}
         value={value}
         autoComplete={autoComplete}
         placeholder={placeholder}
+        required
+        minLength={autoComplete === "new-password" ? 8 : undefined}
         onChange={(event) => onChange(event.target.value)}
-        className="mt-2 h-11 w-full rounded-md border border-border bg-card px-3 text-sm outline-none placeholder:text-muted-foreground focus:border-primary/60"
+        className="app-field mt-2"
       />
     </div>
-  );
+  )
 }

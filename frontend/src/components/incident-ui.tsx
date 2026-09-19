@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react"
 
 import {
   formatCategory,
-  incidents,
   severityClass,
   severityLabel,
   timeAgo,
@@ -13,62 +12,42 @@ import {
 export function SeverityBadge({ severity }: { severity: Incident["severity"] }) {
   return (
     <span className={`severity-badge ${severityClass[severity]}`}>
-      <span className="severity-dot" />
+      <span className="severity-dot" aria-hidden="true" />
       {severityLabel[severity]}
     </span>
   )
 }
 
-export function IncidentTable({
-  rows,
-  limit,
-}: {
-  rows: Incident[]
-  limit?: number
-}) {
+export function IncidentTable({ rows, limit }: { rows: Incident[]; limit?: number }) {
   const visible = typeof limit === "number" ? rows.slice(0, limit) : rows
 
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-card">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[850px] text-left">
+    <div className="data-surface">
+      <div className="hidden overflow-x-auto lg:block">
+        <table className="incident-table">
           <thead>
-            <tr className="border-b border-border bg-secondary/30 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              <th className="px-5 py-4 font-medium">Incident</th>
-              <th className="px-5 py-4 font-medium">Category</th>
-              <th className="px-5 py-4 font-medium">Severity</th>
-              <th className="px-5 py-4 font-medium">Department</th>
-              <th className="px-5 py-4 font-medium">Submitted</th>
-              <th className="px-5 py-4 font-medium">Status</th>
-              <th className="px-5 py-4" />
+            <tr>
+              <th scope="col">Reference</th>
+              <th scope="col">Category</th>
+              <th scope="col">Severity</th>
+              <th scope="col">Department</th>
+              <th scope="col">Received</th>
+              <th scope="col">Status</th>
+              <th scope="col"><span className="sr-only">Open incident</span></th>
             </tr>
           </thead>
           <tbody>
             {visible.map((incident) => (
-              <tr
-                key={incident.id}
-                className="group border-b border-border/70 last:border-0 hover:bg-secondary/25"
-              >
-                <td className="px-5 py-4 font-mono text-xs text-foreground">{incident.id}</td>
-                <td className="px-5 py-4 text-sm font-medium">{formatCategory(incident.category)}</td>
-                <td className="px-5 py-4">
-                  <SeverityBadge severity={incident.severity} />
-                </td>
-                <td className="px-5 py-4 text-sm text-muted-foreground">{incident.department}</td>
-                <td className="px-5 py-4 text-xs text-muted-foreground">
-                  {timeAgo(incident.submitted_at)}
-                </td>
-                <td className="px-5 py-4">
-                  <span className="status-badge">{incident.status}</span>
-                </td>
-                <td className="px-5 py-4">
-                  <Link
-                    to="/incidents/$incidentId"
-                    params={{ incidentId: incident.id }}
-                    aria-label={`Open ${incident.id}`}
-                    className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-                  >
-                    <ArrowRight className="size-4" />
+              <tr key={incident.id}>
+                <td className="font-mono text-xs font-medium">{incident.id}</td>
+                <td className="font-medium">{formatCategory(incident.category)}</td>
+                <td><SeverityBadge severity={incident.severity} /></td>
+                <td className="text-muted-foreground">{incident.department}</td>
+                <td className="whitespace-nowrap text-muted-foreground">{timeAgo(incident.submitted_at)}</td>
+                <td><span className="status-badge">{incident.status}</span></td>
+                <td>
+                  <Link to="/incidents/$incidentId" params={{ incidentId: incident.id }} aria-label={`Open incident ${incident.id}`} className="incident-open">
+                    <ArrowRight size={16} aria-hidden="true" />
                   </Link>
                 </td>
               </tr>
@@ -76,6 +55,26 @@ export function IncidentTable({
           </tbody>
         </table>
       </div>
+      <ul className="incident-mobile-list lg:hidden" aria-label="Incidents">
+        {visible.map((incident) => (
+          <li key={incident.id} className="min-w-0">
+          <Link to="/incidents/$incidentId" params={{ incidentId: incident.id }} className="incident-mobile-card" aria-label={`Open ${incident.id}, ${formatCategory(incident.category)}`}>
+            <div className="incident-mobile-card-top">
+              <div className="min-w-0">
+                <span className="font-mono text-[11px] text-muted-foreground">{incident.id}</span>
+                <p className="mt-2 text-[15px] font-semibold tracking-tight">{formatCategory(incident.category)}</p>
+              </div>
+              <ArrowRight size={18} className="mt-1 shrink-0 text-muted-foreground" aria-hidden="true" />
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <SeverityBadge severity={incident.severity} />
+              <span className="status-badge">{incident.status}</span>
+            </div>
+            <div className="incident-mobile-meta"><span>{incident.department}</span><span>{timeAgo(incident.submitted_at)}</span></div>
+          </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
@@ -92,13 +91,11 @@ export function PageHeading({
   action?: React.ReactNode
 }) {
   return (
-    <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-      <div>
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
-          {eyebrow}
-        </p>
-        <h1 className="font-display text-3xl font-semibold md:text-4xl">{title}</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+    <div className="page-heading">
+      <div className="min-w-0">
+        <p className="page-eyebrow">{eyebrow}</p>
+        <h1 className="page-title">{title}</h1>
+        <p className="page-description">{description}</p>
       </div>
       {action}
     </div>

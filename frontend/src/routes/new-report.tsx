@@ -11,9 +11,6 @@ export const Route = createFileRoute("/new-report")({
   component: NewReport,
 })
 
-const sample =
-  "Maria Adeyemi from Finance received six unexpected MFA prompts this morning. She approved one by mistake. Shortly after, a login from 185.220.101.14 appeared and a new payment recipient was added to the vendor portal. She can be reached on 08034567890 or maria.adeyemi@company.com."
-
 function NewReport() {
   const [report, setReport] = useState("")
   const analyze = useAnalyzeReport()
@@ -26,9 +23,9 @@ function NewReport() {
   return (
     <div>
       <PageHeading
-        eyebrow="Intake and enrichment"
-        title="Test Model"
-        description="Submit an unstructured incident report for classification, redaction, duplicate detection, and response routing."
+        eyebrow="Workspace / Analysis"
+        title="Analyze a report"
+        description="Review an incident description, its classification, redacted details, and suggested routing."
       />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(380px,.85fr)]">
@@ -39,15 +36,10 @@ function NewReport() {
             value={report}
             onChange={(event) => setReport(event.target.value)}
             placeholder="Paste the original incident report here…"
-            className="mt-4 min-h-80 w-full resize-y rounded-md border border-border bg-background p-4 text-sm leading-7 outline-none placeholder:text-muted-foreground focus:border-primary/60"
+            className="app-textarea mt-4 min-h-80"
           />
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-            <button
-              onClick={() => setReport(sample)}
-              className="text-xs font-semibold text-muted-foreground hover:text-foreground"
-            >
-              Load sample report
-            </button>
+            <p className="text-xs leading-5 text-muted-foreground">Analysis only · No case will be created.</p>
             <Button onClick={run} disabled={!report.trim() || analyze.isPending}>
               {analyze.isPending ? (
                 <LoaderCircle className="size-4 animate-spin" />
@@ -61,9 +53,10 @@ function NewReport() {
 
         <section className="panel min-h-[420px]">
           {analyze.isPending ? (
-            <div className="flex min-h-[380px] flex-col items-center justify-center text-center">
-              <LoaderCircle className="size-6 animate-spin text-muted-foreground" />
-              <p className="mt-4 text-sm font-semibold">Analyzing report…</p>
+            <div className="space-y-6" role="status" aria-label="Analyzing report" aria-busy="true">
+              <p className="section-label">Analyzing report…</p>
+              <div className="grid grid-cols-2 gap-3"><div className="data-skeleton h-28 rounded-2xl" /><div className="data-skeleton h-28 rounded-2xl" /></div>
+              <div className="data-skeleton h-22 rounded-2xl" /><div className="data-skeleton h-22 rounded-2xl" /><div className="data-skeleton h-32 rounded-2xl" />
             </div>
           ) : analyze.isError ? (
             <div className="flex min-h-[380px] flex-col items-center justify-center text-center">
@@ -80,9 +73,9 @@ function NewReport() {
               <span className="flex size-12 items-center justify-center rounded-full border border-border bg-secondary/50">
                 <FileSearch className="size-5 text-muted-foreground" />
               </span>
-              <h2 className="mt-4 text-sm font-semibold">Analysis pending</h2>
+              <h2 className="mt-4 text-sm font-semibold">Ready to analyze</h2>
               <p className="mt-2 max-w-xs text-xs leading-5 text-muted-foreground">
-                Classification and routing results will appear here after analysis.
+                Classification and routing results will appear here when the analysis is complete.
               </p>
             </div>
           ) : (
@@ -91,7 +84,7 @@ function NewReport() {
                 <p className="section-label">Analysis complete</p>
                 <span className="flex items-center gap-1.5 text-xs text-success">
                   <Check className="size-3.5" />
-                  From model
+                  Analysis ready
                 </span>
               </div>
 
@@ -106,7 +99,7 @@ function NewReport() {
               </div>
 
               <Result
-                label="Routed to"
+                label="Suggested routing"
                 value={analyze.data.routed_to}
                 icon={<RouteIcon className="size-4" />}
               />
