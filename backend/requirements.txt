@@ -1,15 +1,31 @@
+# Web framework
 fastapi==0.115.6
 uvicorn[standard]==0.34.0
-pydantic==2.10.4
-pydantic-settings==2.7.1
-python-dotenv==1.0.1
-supabase==2.11.0
-httpx==0.28.1
-pytest==8.3.4
 
-# ML pipeline deps (must match ML_pipeline/requirements.txt)
-scikit-learn==1.5.2
-spacy==3.7.5
-pandas==2.2.2
-numpy==1.26.4
-joblib==1.4.2bcrypt==5.0.0
+# Validation & config
+pydantic==2.13.5
+pydantic-settings==2.15.0
+python-dotenv==1.2.3
+
+# Auth
+python-jose[cryptography]==3.5.0
+bcrypt==5.0.0
+
+# Database
+supabase==2.31.0
+
+# HTTP client (used by supabase + tests)
+httpx==0.28.1
+
+# ML pipeline
+scikit-learn==1.9.1
+spacy==3.8.16
+pandas==3.0.6
+numpy==2.5.3
+joblib==1.6.0
+
+# spaCy model — installed as a wheel via direct URL
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85
+
+# Testing
+pytest==9.1.1
