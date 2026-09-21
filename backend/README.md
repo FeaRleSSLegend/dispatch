@@ -1,6 +1,9 @@
 # Dispatch — Backend
 
-The API for Dispatch, a security incident triage dashboard. It serves auth, incident CRUD, analytics, and a report-analysis endpoint that wraps an ML pipeline. Incidents are persisted to Supabase; text classification runs on demand.
+The API for Dispatch, a security incident triage dashboard. It handles auth,
+incident storage, analytics, and report classification. Incidents are
+persisted to Supabase; text classification runs on demand through an
+imported ML pipeline.
 
 FastAPI service that wraps the ML pipeline and stores incidents in Supabase.
 
@@ -45,7 +48,7 @@ API docs at http://localhost:8000/docs.
 | POST | `/api/auth/signup` | — | Create account, returns JWT |
 | POST | `/api/auth/login` | — | Sign in, returns JWT |
 | GET | `/api/auth/me` | required | Current user |
-| GET | `/api/incidents` | required | List incidents (filtered by owner for users, all for admins) |
+| GET | `/api/incidents` | required | List incidents (owner-scoped for users, all for admins) |
 | GET | `/api/incidents/{id}` | required | Single incident |
 | POST | `/api/reports/analyze` | — | Run ML, no persistence |
 | POST | `/api/reports/submit` | required | Run ML + persist, attaches `user_id` |
@@ -53,12 +56,31 @@ API docs at http://localhost:8000/docs.
 
 ## Database
 
-Two tables in Supabase: `users` and `incidents`. See `migrations/` for SQL. Incidents carry a `user_id` foreign key; the API enforces ownership.
+Two tables in Supabase: `users` and `incidents`. See `migrations/` for SQL.
+Incidents carry a `user_id` foreign key; the API enforces ownership.
+
+To create the admin account, insert a row into `users` with a bcrypt-hashed
+password:
+
+```python
+import bcrypt
+hashed = bcrypt.hashpw(b"your-password", bcrypt.gensalt(rounds=12)).decode()
+```
+
+```sql
+insert into users (email, name, password_hash, role)
+values ('admin@example.com', 'Admin', '<hash>', 'admin');
+```
 
 ## ML pipeline
 
-`app/ml.py` adds `../ML_pipeline/src` to `sys.path` and imports `pipeline.process_report()`. Models are loaded once at startup. If the model files are missing, the app fails at boot — check `../ML_pipeline/models/`.
+`app/ml.py` adds `../ML_pipeline/src` to `sys.path` and imports
+`pipeline.process_report()`. Models are loaded once at startup. If the model
+files are missing, the app fails at boot — check `../ML_pipeline/models/`.
 
 ## Deployment
 
-Deployed on Render as a Python web service. Root directory: `backend`. Build: `pip install -r requirements.txt`. Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`. Free tier spins down after 15 min idle; first request after that takes ~30-60s.
+Deployed on Render as a Python web service. Root directory: `backend`.
+Build: `pip install -r requirements.txt`. Start:
+`uvicorn app.main:app --host 0.0.0.0 --port $PORT`. Free tier spins down
+after 15 min idle; first request after that takes ~30-60s.

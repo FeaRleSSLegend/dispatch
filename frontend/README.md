@@ -1,6 +1,8 @@
 # Dispatch — Frontend
 
-The web UI for Dispatch, a security incident triage dashboard. Users file incident reports; analysts review, classify, and route them. This app handles authentication, the reporter submission flow, and the analyst workspace.
+The web UI for Dispatch, a security incident triage dashboard. Users file
+incident reports; analysts review, classify, and route them. This app handles
+authentication, the reporter submission flow, and the analyst workspace.
 
 React SPA that talks to the FastAPI backend at `/api/*`.
 
@@ -22,7 +24,8 @@ npm run dev
 
 Opens on http://localhost:5173.
 
-In dev, `/api/*` is proxied to the backend via Vite. By default it targets `http://127.0.0.1:8000`; override with `DISPATCH_API_PROXY_TARGET` in `.env.local`.
+In dev, `/api/*` is proxied to the backend via Vite. By default it targets
+`http://127.0.0.1:8000`; override with `DISPATCH_API_PROXY_TARGET` in `.env.local`.
 
 ## Environment
 
@@ -55,8 +58,11 @@ Regular users are redirected to `/report` after login; admins land on `/`.
 npm run build
 ```
 
-Output goes to `dist/`. Deployed on Vercel with a SPA rewrite so client-side routes work on hard reload (`vercel.json`).
+Output goes to `dist/`. Deployed on Vercel with a SPA rewrite so client-side
+routes work on hard reload (`vercel.json`).
 
 ## Auth
 
-JWT stored in `localStorage` under `dispatch.token`. `lib/api.ts` attaches it as `Authorization: Bearer <token>` on every request. On 401, the token is cleared and the user is redirected to `/login`.
+JWT stored in `localStorage` under `dispatch.token`. `lib/api.ts` attaches it
+as `Authorization: Bearer <token>` on every request. On 401, the token is
+cleared and the user is redirected to `/login`.
