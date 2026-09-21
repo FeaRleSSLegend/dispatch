@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Check, FileSearch, LoaderCircle, ShieldCheck } from "lucide-react"
-import { useState } from "react"
+import { FileSearch, LoaderCircle } from "lucide-react"
+import { useEffect, useState } from "react"
 
 import { PageHeading } from "@/components/incident-ui"
+import { EmptyState, ErrorState, LoadingState } from "@/components/query-states"
 import { Button } from "@/components/ui/button"
-import { useSubmitReport } from "@/hooks/useIncidents"
-import type { Incident } from "@/lib/incidents"
+import { useIncidents, useSubmitReport } from "@/hooks/useIncidents"
+import { formatCategory, timeAgo, type Incident } from "@/lib/incidents"
 
 export const Route = createFileRoute("/report")({
   component: ReportPage,
@@ -14,8 +15,21 @@ export const Route = createFileRoute("/report")({
 function ReportPage() {
   const [department, setDepartment] = useState("Finance")
   const [report, setReport] = useState("")
-  const [submitted, setSubmitted] = useState<Incident[]>([])
+  const { data, isLoading, isError, error, refetch } = useIncidents({ limit: 100 })
   const submit = useSubmitReport()
+  const [justSubmitted, setJustSubmitted] = useState<Incident[]>([])
+
+  useEffect(() => {
+    if (data?.items.length && justSubmitted.length) {
+      const ids = new Set(data.items.map((i) => i.id))
+      const remaining = justSubmitted.filter((i) => !ids.has(i.id))
+      if (remaining.length !== justSubmitted.length) setJustSubmitted(remaining)
+    }
+  }, [data, justSubmitted])
+
+  const apiItems = data?.items ?? []
+  const seen = new Set(apiItems.map((i) => i.id))
+  const combined = [...justSubmitted.filter((i) => !seen.has(i.id)), ...apiItems]
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault()
@@ -24,8 +38,9 @@ function ReportPage() {
       { text: report, department },
       {
         onSuccess: (incident) => {
-          setSubmitted((prev) => [incident, ...prev])
+          setJustSubmitted((prev) => [incident, ...prev])
           setReport("")
+          refetch()
         },
       },
     )
@@ -62,11 +77,7 @@ function ReportPage() {
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-xs text-muted-foreground">The response team can view the original and redacted report.</p>
             <Button type="submit" disabled={!report.trim() || submit.isPending}>
-              {submit.isPending ? (
-                <LoaderCircle className="size-4 animate-spin" />
-              ) : (
-                <FileSearch className="size-4" />
-              )}
+              {submit.isPending ? <LoaderCircle className="size-4 animate-spin" /> : <FileSearch className="size-4" />}
               {submit.isPending ? "Sending" : "Submit report"}
             </Button>
           </div>
@@ -78,31 +89,38 @@ function ReportPage() {
         </form>
 
         <section className="panel">
-          <p className="section-label">Submitted this session</p>
-          {submitted.length === 0 ? (
-            <div className="flex min-h-64 flex-col items-center justify-center text-center">
-              <span className="flex size-12 items-center justify-center rounded-full border border-border bg-secondary/50">
-                <ShieldCheck className="size-5 text-muted-foreground" />
-              </span>
-              <h2 className="mt-4 text-sm font-semibold">Nothing submitted yet</h2>
-              <p className="mt-2 max-w-xs text-xs leading-5 text-muted-foreground">
-                Reports sent during this session will appear here with their reference numbers.
-              </p>
-            </div>
+          <p className="section-label">Your reports</p>
+          {isLoading ? (
+            <LoadingState label="Loading your reports…" rows={3} />
+          ) : isError ? (
+            <ErrorState
+              message={error instanceof Error ? error.message : "Unable to load reports."}
+              onRetry={() => refetch()}
+            />
+          ) : combined.length === 0 ? (
+            <EmptyState
+              title="Nothing submitted yet"
+              description="Reports you send will appear here with their reference numbers."
+            />
           ) : (
             <ul className="mt-4 space-y-3">
-              {submitted.map((item) => (
+              {combined.slice(0, 20).map((item) => (
                 <li key={item.id} className="result-block">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-3">
                     <p className="font-mono text-xs">{item.id}</p>
-                    <span className="flex items-center gap-1.5 text-[11px] text-success">
-                      <Check className="size-3.5" />
-                      Received · {item.department}
+                    <span className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                      {timeAgo(item.submitted_at)}
                     </span>
                   </div>
                   <p className="mt-2 text-xs leading-6 text-muted-foreground">
                     {item.report.slice(0, 120)}
+                    {item.report.length > 120 ? "…" : ""}
                   </p>
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <span className="status-badge">{formatCategory(item.category)}</span>
+                    <span className="status-badge">{item.status}</span>
+                    <span className="status-badge">{item.department}</span>
+                  </div>
                 </li>
               ))}
             </ul>
